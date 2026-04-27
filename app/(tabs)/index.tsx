@@ -23,7 +23,7 @@ export default function TabLayout() {
         }}
       >
         <Tabs.Screen
-          name="simulatorScreen"
+          name="SimulatorScreen"
           options={{
             tabBarIcon: (props) => (
               <Octicons
@@ -35,7 +35,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="compareScreen"
+          name="CompareScreen"
           options={{
             tabBarIcon: ({ color, focused }) => (
               <Octicons
@@ -47,7 +47,7 @@ export default function TabLayout() {
           }}
         />
         <Tabs.Screen
-          name="historyScreen"
+          name="HistoryScreen"
           options={{
             tabBarIcon: ({ color }) => (
               <Octicons name={"history"} size={24} color={color} />
