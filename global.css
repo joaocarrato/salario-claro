@@ -7,10 +7,11 @@
   --color-background: "#F8F9FA";
   --color-primary: "#00685F";
   --color-primary-contrast: "#FFFFFF";
-  --color-surface: "#D9DADB";
+  --color-secondary: "#3D4947";
+  --color-surface: "#E1E3E4";
   --color-deduction: "#BA1A1A";
   --color-success: "#008378";
-  --color-container: "#E7E8E9";
+  --color-container: "#BCC9C6";
   --color-subtitle: "#6D7A77";
 
   --font-roboto: "Roboto Regular";

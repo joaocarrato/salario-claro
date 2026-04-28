@@ -30,7 +30,7 @@ interface CardProps extends Pick<ViewProps, "style"> {
   cardStyle?: "mainCard" | "smallCard";
   textInputProps?: Pick<
     TextInputProps,
-    "placeholder" | "value" | "onChangeText"
+    "placeholder" | "value" | "onChangeText" | "keyboardType"
   >;
 }
 

@@ -1,12 +1,13 @@
 import { Button } from "@/src/components/Button/Button";
 import Card from "@/src/components/Card/Card";
+import { NetSalaryCard } from "@/src/components/NetSalaryCard/NetSalaryCard";
 import Screen from "@/src/components/Screen/Screen";
 export default function SimulatorScreen() {
   return (
     <Screen scrollable>
       <Card
         title="Informe seu salário bruto mensal"
-        textInputProps={{ placeholder: "R$1500" }}
+        textInputProps={{ placeholder: "R$1500", keyboardType: "numeric" }}
         style={{ marginBottom: 16 }}
       />
 
@@ -14,7 +15,7 @@ export default function SimulatorScreen() {
         title="Informe seu salário bruto mensal"
         cardStyle="smallCard"
         iconName="people"
-        textInputProps={{ placeholder: "0" }}
+        textInputProps={{ placeholder: "0", keyboardType: "numeric" }}
         style={{ marginBottom: 16 }}
       />
 
@@ -22,7 +23,7 @@ export default function SimulatorScreen() {
         title="Vale transporte (%)"
         cardStyle="smallCard"
         iconName="bus"
-        textInputProps={{ placeholder: "6%" }}
+        textInputProps={{ placeholder: "6%", keyboardType: "numeric" }}
         style={{ marginBottom: 16 }}
       />
 
@@ -30,7 +31,7 @@ export default function SimulatorScreen() {
         title="Vale Refeição (R$)"
         cardStyle="smallCard"
         iconName="fast-food"
-        textInputProps={{ placeholder: "0,00" }}
+        textInputProps={{ placeholder: "0,00", keyboardType: "numeric" }}
         style={{ marginBottom: 16 }}
       />
 
@@ -38,7 +39,7 @@ export default function SimulatorScreen() {
         title="Plano de Saúde (R$)"
         cardStyle="smallCard"
         iconName="medkit"
-        textInputProps={{ placeholder: "0,00" }}
+        textInputProps={{ placeholder: "0,00", keyboardType: "numeric" }}
         style={{ marginBottom: 16 }}
       />
 
@@ -46,9 +47,10 @@ export default function SimulatorScreen() {
         title="Outros Descontos (R$)"
         cardStyle="smallCard"
         iconName="document"
-        textInputProps={{ placeholder: "0,00" }}
-        style={{ marginBottom: 16 }}
+        textInputProps={{ placeholder: "0,00", keyboardType: "numeric" }}
       />
+
+      <NetSalaryCard />
 
       <Button iconName="calculator" style={{ marginBottom: 16 }} />
     </Screen>
