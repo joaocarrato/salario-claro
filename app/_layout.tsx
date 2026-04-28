@@ -1,13 +1,31 @@
 import "@/global.css";
 import { RootTabs } from "@/src/navigation/tabs/RootTabs";
-import React from "react";
+import { useFonts } from "expo-font";
+import { SplashScreen } from "expo-router";
+import React, { useEffect } from "react";
 import { StatusBar } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
+SplashScreen.hideAsync();
+
 export default function RootLayout() {
+  const [loaded, error] = useFonts({
+    "Playfair Display": require("../src/assets/fonts/PlayfairDisplay-Regular.ttf"),
+    "Playfair Display Bold": require("../src/assets/fonts/PlayfairDisplay-Bold.ttf"),
+    "Roboto Regular": require("../src/assets/fonts/Roboto-Regular.ttf"),
+    "Roboto Medium": require("../src/assets/fonts/Roboto-Medium.ttf"),
+    "Roboto Bold": require("../src/assets/fonts/Roboto-Bold.ttf"),
+  });
+
+  useEffect(() => {
+    if (loaded || error) {
+      SplashScreen.hideAsync();
+    }
+  }, [loaded, error]);
+
   return (
     <SafeAreaProvider>
-      <StatusBar barStyle={"default"} />
+      <StatusBar barStyle={"dark-content"} />
       <RootTabs />
     </SafeAreaProvider>
   );

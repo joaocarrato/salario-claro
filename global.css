@@ -4,12 +4,19 @@
 @import "nativewind/theme";
 
 @theme {
-  --color-background: "#EFF1C5";
-  --color-primary: "#002E2C";
+  --color-background: "#F8F9FA";
+  --color-primary: "#00685F";
   --color-primary-contrast: "#FFFFFF";
-  --color-secondary: "#035E7B";
-  --color-text-primary: "#04080F";
-  --color-text-secondary: "#BFC6C4";
-  --color-error: "#9E2A2B";
-  --color-warning: "#FABC3C";
+  --color-surface: "#D9DADB";
+  --color-deduction: "#BA1A1A";
+  --color-success: "#008378";
+  --color-container: "#E7E8E9";
+  --color-subtitle: "#6D7A77";
+
+  --font-roboto: "Roboto Regular";
+  --font-roboto-medium: "Roboto Medium";
+  --font-roboto-bold: "Roboto Bold";
+
+  --font-playfair: "Playfair Display";
+  --font-playfair-bold: "Playfair Display Bold";
 }
