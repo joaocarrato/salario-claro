@@ -10,7 +10,7 @@ type ScreenProps = {
 export default function Screen({ children, scrollable }: ScreenProps) {
   const Container = scrollable ? ScrollViewContainer : ViewContainer;
   return (
-    <View className="flex-1 pt-safe pb-safe bg-background">
+    <View className="flex-1 pt-safe bg-background">
       <ScreenHeader />
       <Container>{children}</Container>
     </View>

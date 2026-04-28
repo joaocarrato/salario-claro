@@ -1,19 +1,53 @@
+import Card from "@/src/components/Card/Card";
 import Screen from "@/src/components/Screen/Screen";
-import { Text, TextInput, View } from "react-native";
-
 export default function SimulatorScreen() {
   return (
     <Screen scrollable>
-      <View className="bg-white rounded-lg p-6 shadow-sm">
-        <Text className="text-xl font-roboto-bold color-subtitle mb-2">
-          Informe seu salário bruto mensal
-        </Text>
+      <Card
+        title="Informe seu salário bruto mensal"
+        textInputProps={{ placeholder: "R$1500" }}
+        style={{ marginBottom: 16 }}
+      />
 
-        <TextInput
-          className="p-4 border-2 border-gray-300 rounded-lg"
-          placeholder="R$ 1500,00"
-        />
-      </View>
+      <Card
+        title="Informe seu salário bruto mensal"
+        cardStyle="smallCard"
+        iconName="people"
+        textInputProps={{ placeholder: "0" }}
+        style={{ marginBottom: 16 }}
+      />
+
+      <Card
+        title="Vale transporte (%)"
+        cardStyle="smallCard"
+        iconName="bus"
+        textInputProps={{ placeholder: "6%" }}
+        style={{ marginBottom: 16 }}
+      />
+
+      <Card
+        title="Vale Refeição (R$)"
+        cardStyle="smallCard"
+        iconName="fast-food"
+        textInputProps={{ placeholder: "0,00" }}
+        style={{ marginBottom: 16 }}
+      />
+
+      <Card
+        title="Plano de Saúde (R$)"
+        cardStyle="smallCard"
+        iconName="medkit"
+        textInputProps={{ placeholder: "0,00" }}
+        style={{ marginBottom: 16 }}
+      />
+
+      <Card
+        title="Outros Descontos (R$)"
+        cardStyle="smallCard"
+        iconName="document"
+        textInputProps={{ placeholder: "0,00" }}
+        style={{ marginBottom: 16 }}
+      />
     </Screen>
   );
 }
