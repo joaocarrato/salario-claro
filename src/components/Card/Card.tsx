@@ -74,4 +74,5 @@ const $inputStyle: StyleProp<TextStyle> = {
   fontFamily: "Roboto-Regular",
   fontSize: 16,
   color: "#000",
+  height: 40,
 };

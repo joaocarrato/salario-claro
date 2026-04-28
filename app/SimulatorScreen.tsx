@@ -50,7 +50,7 @@ export default function SimulatorScreen() {
         textInputProps={{ placeholder: "0,00", keyboardType: "numeric" }}
       />
 
-      <NetSalaryCard />
+      <NetSalaryCard netSalary={1500} />
 
       <Button iconName="calculator" style={{ marginBottom: 16 }} />
     </Screen>
