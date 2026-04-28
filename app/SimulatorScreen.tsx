@@ -1,3 +1,4 @@
+import { Button } from "@/src/components/Button/Button";
 import Card from "@/src/components/Card/Card";
 import Screen from "@/src/components/Screen/Screen";
 export default function SimulatorScreen() {
@@ -48,6 +49,8 @@ export default function SimulatorScreen() {
         textInputProps={{ placeholder: "0,00" }}
         style={{ marginBottom: 16 }}
       />
+
+      <Button iconName="calculator" style={{ marginBottom: 16 }} />
     </Screen>
   );
 }
