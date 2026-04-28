@@ -24,7 +24,7 @@ const cardStyles = {
 
 type IconName = ComponentProps<typeof Ionicons>["name"];
 
-interface CardProps extends Pick<ViewProps, "style"> {
+export interface CardProps extends Pick<ViewProps, "style"> {
   title: string;
   iconName?: IconName;
   cardStyle?: "mainCard" | "smallCard";

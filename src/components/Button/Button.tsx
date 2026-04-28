@@ -21,11 +21,13 @@ type IconName = ComponentProps<typeof Ionicons>["name"];
 interface ButtonProps extends PressableProps {
   variant?: "primary" | "outline";
   iconName?: IconName;
+  title: string;
 }
 
 export function Button({
   variant = "primary",
   iconName,
+  title,
   ...props
 }: ButtonProps) {
   return (
@@ -37,7 +39,7 @@ export function Button({
           color={$buttonStyles[variant].iconColor}
         />
       )}
-      <Text className={$buttonStyles[variant].text}>Calcular salário</Text>
+      <Text className={$buttonStyles[variant].text}>{title}</Text>
     </Pressable>
   );
 }
