@@ -8,27 +8,29 @@ export type TabRouteName =
 export type TabRoute = {
   name: TabRouteName;
   icon: TabIconConfig;
+  label: string;
 };
 
 export const TAB_ROUTES: TabRoute[] = [
   {
     name: "SimulatorScreen",
     icon: {
-      default: "home",
-      focused: "home-fill",
+      default: "graph",
     },
+    label: "Simulador",
   },
   {
     name: "CompareScreen",
     icon: {
-      default: "git-compare",
-      focused: "git-compare",
+      default: "arrow-switch",
     },
+    label: "Comparação",
   },
   {
     name: "HistoryScreen",
     icon: {
       default: "history",
     },
+    label: "Histórico",
   },
 ];

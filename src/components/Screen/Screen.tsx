@@ -1,12 +1,18 @@
-import { PropsWithChildren } from "react";
 import { View } from "react-native";
+import { ScrollViewContainer, ViewContainer } from "./ScreenContainer";
 import ScreenHeader from "./ScreenHeader";
 
-export default function Screen({ children }: PropsWithChildren<{}>) {
+type ScreenProps = {
+  children: React.ReactNode;
+  scrollable?: boolean;
+};
+
+export default function Screen({ children, scrollable }: ScreenProps) {
+  const Container = scrollable ? ScrollViewContainer : ViewContainer;
   return (
     <View className="flex-1 pt-safe pb-safe bg-background">
       <ScreenHeader />
-      <View className="px-5">{children}</View>
+      <Container>{children}</Container>
     </View>
   );
 }

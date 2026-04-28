@@ -17,5 +17,5 @@ type TabBarIconProps = {
 export function TabBarIcon({ color, focused, icon }: TabBarIconProps) {
   const name = focused && icon.focused ? icon.focused : icon.default;
 
-  return <Octicons name={name} size={24} color={color} />;
+  return <Octicons name={name} size={20} color={color} />;
 }

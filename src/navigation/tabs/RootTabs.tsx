@@ -5,7 +5,7 @@ import { TAB_ROUTES } from "./tabRoutes";
 import { createTabScreenOptions } from "./tabScreenOptions";
 import { useRootTabScreenOptions } from "./useRootTabScreenOptions";
 
-export function RootTabs() {
+export function RootTabs(): React.JSX.Element {
   const screenOptions = useRootTabScreenOptions();
 
   return (

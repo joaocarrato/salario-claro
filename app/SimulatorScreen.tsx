@@ -1,15 +1,18 @@
 import Screen from "@/src/components/Screen/Screen";
-import { Text, View } from "react-native";
+import { Text, TextInput, View } from "react-native";
 
 export default function SimulatorScreen() {
   return (
-    <Screen>
-      <View className="flex-row items-center justify-between mb-6">
-        <Text className="text-4xl  color-text-primary font-playfair-bold">
-          Salário Curto
+    <Screen scrollable>
+      <View className="bg-white rounded-lg p-6 shadow-sm">
+        <Text className="text-xl font-roboto-bold color-subtitle mb-2">
+          Informe seu salário bruto mensal
         </Text>
 
-        <View className="h-12 w-12 bg-green-900 rounded-full" />
+        <TextInput
+          className="p-4 border-2 border-gray-300 rounded-lg"
+          placeholder="R$ 1500,00"
+        />
       </View>
     </Screen>
   );
