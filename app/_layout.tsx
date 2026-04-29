@@ -1,5 +1,6 @@
 import "@/global.css";
 import { RootTabs } from "@/src/navigation/tabs/RootTabs";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
 import React, { useEffect } from "react";
@@ -7,6 +8,8 @@ import { StatusBar } from "react-native";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 SplashScreen.hideAsync();
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   const [loaded, error] = useFonts({
@@ -24,9 +27,11 @@ export default function RootLayout() {
   }, [loaded, error]);
 
   return (
-    <SafeAreaProvider>
-      <StatusBar barStyle={"dark-content"} />
-      <RootTabs />
-    </SafeAreaProvider>
+    <QueryClientProvider client={queryClient}>
+      <SafeAreaProvider>
+        <StatusBar barStyle={"dark-content"} />
+        <RootTabs />
+      </SafeAreaProvider>
+    </QueryClientProvider>
   );
 }
