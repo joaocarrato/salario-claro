@@ -104,6 +104,8 @@ export default function CompareScreen() {
 
       {comparisonResult ? (
         <DifferenceCard
+          firstNetSalary={comparisonResult.first.net_salary}
+          secondNetSalary={comparisonResult.second.net_salary}
           netSalaryDifference={comparisonResult.difference.net_salary}
           grossSalaryDifference={comparisonResult.difference.gross_salary}
           deductionDifference={comparisonResult.difference.total_discounts}
