@@ -2,16 +2,26 @@ import React from "react";
 import { Text, View } from "react-native";
 
 type Props = {
+  firstNetSalary: number;
+  secondNetSalary: number;
   netSalaryDifference: number;
   grossSalaryDifference: number;
   deductionDifference: number;
 };
 
 export function DifferenceCard({
+  firstNetSalary,
+  secondNetSalary,
   netSalaryDifference,
   grossSalaryDifference,
   deductionDifference,
 }: Props) {
+  const netSalaryWinnerMessage =
+    firstNetSalary > secondNetSalary
+      ? "A proposta A paga mais no líquido"
+      : secondNetSalary > firstNetSalary
+      ? "A proposta B paga mais no líquido"
+      : "As duas propostas pagam o mesmo líquido";
   return (
     <View className="bg-white p-6 rounded-lg shadow-sm mb-6">
       <Text className="text-2xl font-roboto-bold mb-12">Diferença líquida</Text>
@@ -21,7 +31,7 @@ export function DifferenceCard({
         {netSalaryDifference.toFixed(2).replace(".", ",")}
       </Text>
       <Text className="text-md font-roboto-bold color-primary bg-green-200/40 rounded-2xl p-2 self-center mb-8">
-        A proposta B paga mais no líquido
+        {netSalaryWinnerMessage}
       </Text>
 
       <Divider />
