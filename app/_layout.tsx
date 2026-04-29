@@ -5,6 +5,7 @@ import { useFonts } from "expo-font";
 import { SplashScreen } from "expo-router";
 import React, { useEffect } from "react";
 import { StatusBar } from "react-native";
+import { KeyboardProvider } from "react-native-keyboard-controller";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 
 SplashScreen.hideAsync();
@@ -27,11 +28,13 @@ export default function RootLayout() {
   }, [loaded, error]);
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <SafeAreaProvider>
-        <StatusBar barStyle={"dark-content"} />
-        <RootTabs />
-      </SafeAreaProvider>
-    </QueryClientProvider>
+    <KeyboardProvider>
+      <QueryClientProvider client={queryClient}>
+        <SafeAreaProvider>
+          <StatusBar barStyle={"dark-content"} />
+          <RootTabs />
+        </SafeAreaProvider>
+      </QueryClientProvider>
+    </KeyboardProvider>
   );
 }
