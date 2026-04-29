@@ -6,6 +6,7 @@ export function CardInputForm<FormType extends FieldValues>({
   control,
   name,
   rules,
+  textInputProps,
   ...props
 }: CardProps & UseControllerProps<FormType>) {
   return (
@@ -15,8 +16,13 @@ export function CardInputForm<FormType extends FieldValues>({
       rules={rules}
       render={({ field }) => (
         <Card
-          textInputProps={{ value: field.value, onChangeText: field.onChange }}
           {...props}
+          textInputProps={{
+            ...textInputProps,
+            value: field.value == null ? "" : String(field.value),
+            onChangeText: field.onChange,
+            onBlur: field.onBlur,
+          }}
         />
       )}
     />

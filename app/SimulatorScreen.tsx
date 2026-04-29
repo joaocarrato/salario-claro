@@ -2,29 +2,53 @@ import { Button } from "@/src/components/Button/Button";
 import { CardInputForm } from "@/src/components/CardInputForm/CardInputForm";
 import { NetSalaryCard } from "@/src/components/NetSalaryCard/NetSalaryCard";
 import Screen from "@/src/components/Screen/Screen";
+import { payrollApi, PayrollCalculate } from "@/src/domain/Payroll/payrollApi";
 import {
   simulatorScreenSchema,
+  simulatorScreenSchemaInput,
   simulatorScreenSchemaType,
 } from "@/src/schema/simulatorScreenSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 
-const $default_values: simulatorScreenSchemaType = {
-  grossSalary: 0,
-  dependents: 0,
-  transportationVoucher: 0,
-  mealVoucher: 0,
-  healthPlan: 0,
-  otherDeductions: 0,
+const $default_values: simulatorScreenSchemaInput = {
+  grossSalary: "",
+  dependents: "",
+  transportationVoucherPercentage: "6",
+  mealVoucher: "",
+  healthPlan: "",
+  otherDeductions: "",
 };
 
 export default function SimulatorScreen() {
   const { control, handleSubmit, formState } =
-    useForm<simulatorScreenSchemaType>({
+    useForm<simulatorScreenSchemaInput, unknown, simulatorScreenSchemaType>({
       resolver: zodResolver(simulatorScreenSchema),
       defaultValues: $default_values,
       mode: "onChange",
     });
+
+  async function onSubmit(data: simulatorScreenSchemaType) {
+    const transportationVoucherDeduction =
+      data.grossSalary * (data.transportationVoucherPercentage / 100);
+
+    const payload: PayrollCalculate = {
+      gross_salary: data.grossSalary,
+      dependents: data.dependents,
+      transport_discount: transportationVoucherDeduction,
+      meal_discount: data.mealVoucher,
+      health_plan_discount: data.healthPlan,
+      other_discounts: data.otherDeductions,
+      calculation_year: 2026,
+    };
+
+    await payrollApi.calculate(payload);
+
+    console.log("Form data:", data);
+    console.log("Backend payload:", payload);
+    console.log("Form is valid:", formState.isValid);
+  }
+
   return (
     <Screen scrollable>
       <CardInputForm
@@ -47,11 +71,11 @@ export default function SimulatorScreen() {
 
       <CardInputForm
         control={control}
-        name="transportationVoucher"
+        name="transportationVoucherPercentage"
         title="Vale transporte (%)"
         cardStyle="smallCard"
         iconName="bus"
-        textInputProps={{ placeholder: "6%", keyboardType: "numeric" }}
+        textInputProps={{ placeholder: "6", keyboardType: "numeric" }}
         style={{ marginBottom: 16 }}
       />
 
@@ -90,6 +114,9 @@ export default function SimulatorScreen() {
         title="Calcular salário"
         iconName="calculator"
         style={{ marginBottom: 16 }}
+        variant={!formState.isValid ? "outline" : "primary"}
+        disabled={!formState.isValid}
+        onPress={handleSubmit(onSubmit)}
       />
     </Screen>
   );
