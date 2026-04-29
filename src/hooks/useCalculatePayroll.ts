@@ -18,7 +18,7 @@ export function useCalculatePayroll() {
   });
 }
 
-export function getPayrollErrorMessage(error: unknown) {
+export function getPayrollErrorMessage(error: unknown, action = "calcular") {
   if (axios.isAxiosError(error)) {
     if (!error.response) {
       return "Erro de rede. Verifique se a API está rodando e se a base URL está correta.";
@@ -30,11 +30,11 @@ export function getPayrollErrorMessage(error: unknown) {
         ? Object.values(data.errors).flat()[0]
         : undefined;
 
-      return firstFieldError || data?.message || "Dados inválidos para cálculo.";
+      return firstFieldError || data?.message || "Dados inválidos enviados.";
     }
 
-    return "Não foi possível calcular o salário agora. Tente novamente.";
+    return `Não foi possível ${action} o salário agora. Tente novamente.`;
   }
 
-  return "Erro inesperado ao calcular salário.";
+  return `Erro inesperado ao ${action} salário.`;
 }

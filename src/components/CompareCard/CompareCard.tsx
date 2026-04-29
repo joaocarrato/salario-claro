@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleProp, Text, View, ViewStyle } from "react-native";
-import { Input } from "../Input/Input";
+import { Input, InputProps } from "../Input/Input";
 
 const $compareStyles = {
   primary: {
@@ -26,6 +26,7 @@ interface CompareCardProps {
   netSalary?: number;
   boxProps?: StyleProp<ViewStyle>;
   disabled?: boolean;
+  inputProps?: Omit<InputProps, "label">;
 }
 
 export function CompareCard({
@@ -36,6 +37,7 @@ export function CompareCard({
   netSalary,
   boxProps,
   disabled = true,
+  inputProps,
 }: CompareCardProps) {
   const { container, text } = $compareStyles[type];
 
@@ -54,7 +56,7 @@ export function CompareCard({
       </View>
       <Divider />
 
-      <Input label={inputLabel} />
+      <Input label={inputLabel} {...inputProps} />
 
       {!disabled && (
         <>
