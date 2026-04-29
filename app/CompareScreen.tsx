@@ -3,9 +3,7 @@ import { CompareCard } from "@/src/components/CompareCard/CompareCard";
 import { DifferenceCard } from "@/src/components/DifferenceCard/DifferenceCard";
 import Screen from "@/src/components/Screen/Screen";
 import { ComparePayrollRequest } from "@/src/domain/Payroll/payrollTypes";
-import {
-  getPayrollErrorMessage,
-} from "@/src/hooks/useCalculatePayroll";
+import { getPayrollErrorMessage } from "@/src/hooks/useCalculatePayroll";
 import { useComparePayroll } from "@/src/hooks/useComparePayroll";
 import { useState } from "react";
 import { Text } from "react-native";
@@ -13,7 +11,7 @@ import { Text } from "react-native";
 const DEFAULT_CALCULATION_YEAR = 2026;
 
 function parseCurrencyInput(value: string) {
-  const normalized = value.replace(/\./g, "").replace(",", ".").trim();
+  const normalized = value.replace(/\./g, "").replace(",", ",").trim();
 
   if (!normalized) return 0;
 
@@ -120,7 +118,9 @@ export default function CompareScreen() {
 
       <Button
         title={
-          comparePayrollMutation.isPending ? "Comparando..." : "Comparar salários"
+          comparePayrollMutation.isPending
+            ? "Comparando..."
+            : "Comparar salários"
         }
         iconName="swap-horizontal"
         variant={!canCompare ? "disabled" : "primary"}
