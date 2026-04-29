@@ -34,12 +34,15 @@ export default function SimulatorScreen() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const calculatePayrollMutation = useCalculatePayroll();
 
-  const { control, handleSubmit, formState } =
-    useForm<simulatorScreenSchemaInput, unknown, simulatorScreenSchemaType>({
-      resolver: zodResolver(simulatorScreenSchema),
-      defaultValues: $default_values,
-      mode: "onChange",
-    });
+  const { control, handleSubmit, formState } = useForm<
+    simulatorScreenSchemaInput,
+    unknown,
+    simulatorScreenSchemaType
+  >({
+    resolver: zodResolver(simulatorScreenSchema),
+    defaultValues: $default_values,
+    mode: "onChange",
+  });
 
   async function onSubmit(data: simulatorScreenSchemaType) {
     const transportationVoucherDeduction =
@@ -129,19 +132,21 @@ export default function SimulatorScreen() {
         textInputProps={{ placeholder: "0,00", keyboardType: "numeric" }}
       />
 
-      <NetSalaryCard
-        netSalary={result?.net_salary}
-        inssValue={result?.discounts.inss}
-        irrfValue={result?.discounts.irrf}
-        benefitsValue={
-          result
-            ? result.discounts.transport +
-              result.discounts.meal +
-              result.discounts.health_plan +
-              result.discounts.other
-            : undefined
-        }
-      />
+      {result && (
+        <NetSalaryCard
+          netSalary={result.net_salary}
+          inssValue={result.discounts.inss}
+          irrfValue={result.discounts.irrf}
+          benefitsValue={
+            result
+              ? result.discounts.transport +
+                result.discounts.meal +
+                result.discounts.health_plan +
+                result.discounts.other
+              : undefined
+          }
+        />
+      )}
 
       {errorMessage ? (
         <Text className="text-sm color-deduction font-roboto mb-4">
@@ -156,8 +161,8 @@ export default function SimulatorScreen() {
             : "Calcular salário"
         }
         iconName="calculator"
-        style={{ marginBottom: 16 }}
-        variant={!formState.isValid ? "outline" : "primary"}
+        style={{ marginBottom: 16, marginTop: result ? 16 : 0 }}
+        variant={!formState.isValid ? "disabled" : "primary"}
         disabled={!formState.isValid || calculatePayrollMutation.isPending}
         onPress={handleSubmit(onSubmit)}
       />

@@ -19,12 +19,18 @@ const $buttonStyles = {
     text: "text-primary text-md font-roboto-bold ml-2",
     iconColor: "#00685F",
   },
+  disabled: {
+    container:
+      "bg-gray-300 rounded-md p-4 flex-row items-center justify-center",
+    text: "text-gray-500 text-md font-roboto-bold ml-2",
+    iconColor: "#A0A0A0",
+  },
 };
 
 type IconName = ComponentProps<typeof Ionicons>["name"];
 
 interface ButtonProps extends PressableProps {
-  variant?: "primary" | "outline";
+  variant?: "primary" | "outline" | "disabled";
   iconName?: IconName;
   title: string;
   loading?: boolean;
