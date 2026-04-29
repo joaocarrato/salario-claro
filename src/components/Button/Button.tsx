@@ -70,7 +70,7 @@ function ButtonContainer({
       {iconName && (
         <Ionicons
           name={iconName}
-          size={24}
+          size={22}
           color={$buttonStyles[variant].iconColor}
         />
       )}

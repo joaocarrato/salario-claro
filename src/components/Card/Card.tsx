@@ -71,7 +71,7 @@ export default function Card({
 }
 
 const $inputStyle: StyleProp<TextStyle> = {
-  fontFamily: "Roboto-Regular",
+  fontFamily: "Roboto Regular",
   fontSize: 16,
   color: "#000",
   height: 40,

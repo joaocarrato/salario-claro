@@ -1,6 +1,8 @@
-import { Input } from "@/src/components/Input/Input";
+import { Button } from "@/src/components/Button/Button";
+import { CompareCard } from "@/src/components/CompareCard/CompareCard";
+import { DifferenceCard } from "@/src/components/DifferenceCard/DifferenceCard";
 import Screen from "@/src/components/Screen/Screen";
-import { Text, View } from "react-native";
+import { Text } from "react-native";
 
 export default function CompareScreen() {
   return (
@@ -10,50 +12,25 @@ export default function CompareScreen() {
         Veja a diferença real entre dois salários
       </Text>
 
-      <View className="p-6 border border-surface rounded-md bg-white">
-        <View className="flex-row items-center">
-          <View className="bg-gray-300 h-8 w-8 items-center justify-center rounded-2xl">
-            <Text className="text-xl color-gray-500 font-roboto">A</Text>
-          </View>
-          <Text className="text-2xl font-roboto-bold ml-4">Proposta A</Text>
-        </View>
-        <Divider />
+      <CompareCard
+        type="primary"
+        inputLabel="Salário Bruto"
+        boxProps={{ marginBottom: 16 }}
+      />
 
-        <Input />
+      <CompareCard
+        type="secondary"
+        inputLabel="Salário Bruto"
+        boxProps={{ marginBottom: 16 }}
+      />
 
-        <View className="p-4 bg-surface rounded-lg my-6">
-          <Text className="font-roboto-medium color-secondary mb-2">
-            RESUMO DE DESCONTOS
-          </Text>
+      <DifferenceCard
+        netSalaryDifference={400}
+        grossSalaryDifference={600}
+        deductionDifference={200}
+      />
 
-          <View className="flex-row items-center justify-between mb-2">
-            <Text className="font-roboto color-secondary">INSS (Teto)</Text>
-            <Text className="font-roboto-bold color-deduction">
-              - R$ 1.200,00
-            </Text>
-          </View>
-
-          <View className="flex-row items-center justify-between">
-            <Text className="font-roboto color-secondary">IRRF Estimado</Text>
-            <Text className="font-roboto-bold color-deduction">
-              - R$ 1.200,00
-            </Text>
-          </View>
-        </View>
-
-        <Divider />
-
-        <View className="flex-row items-center justify-between">
-          <Text className="font-roboto-bold color-secondary">
-            Salário Líquido
-          </Text>
-          <Text className="text-2xl font-roboto-bold">R$ 5.000,00</Text>
-        </View>
-      </View>
+      <Button title="Comparar salários" iconName="swap-horizontal" />
     </Screen>
   );
-}
-
-function Divider() {
-  return <View className="h-0.5 bg-gray-200 my-6" />;
 }
