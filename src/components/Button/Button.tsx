@@ -1,6 +1,11 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { ComponentProps } from "react";
-import { Pressable, PressableProps, Text } from "react-native";
+import React, { ComponentProps, JSX } from "react";
+import {
+  ActivityIndicator,
+  Pressable,
+  PressableProps,
+  Text,
+} from "react-native";
 
 const $buttonStyles = {
   primary: {
@@ -22,16 +27,40 @@ interface ButtonProps extends PressableProps {
   variant?: "primary" | "outline";
   iconName?: IconName;
   title: string;
+  loading?: boolean;
+  disabled?: boolean;
 }
 
 export function Button({
   variant = "primary",
   iconName,
   title,
+  loading,
+  disabled,
   ...props
 }: ButtonProps) {
   return (
-    <Pressable className={$buttonStyles[variant].container} {...props}>
+    <Pressable
+      className={$buttonStyles[variant].container}
+      disabled={loading || disabled}
+      {...props}
+    >
+      {loading ? (
+        <ActivityIndicator color={$buttonStyles[variant].iconColor} />
+      ) : (
+        <ButtonContainer variant={variant} iconName={iconName} title={title} />
+      )}
+    </Pressable>
+  );
+}
+
+function ButtonContainer({
+  variant = "primary",
+  iconName,
+  title,
+}: Pick<ButtonProps, "variant" | "iconName" | "title">): JSX.Element {
+  return (
+    <>
       {iconName && (
         <Ionicons
           name={iconName}
@@ -40,6 +69,6 @@ export function Button({
         />
       )}
       <Text className={$buttonStyles[variant].text}>{title}</Text>
-    </Pressable>
+    </>
   );
 }
