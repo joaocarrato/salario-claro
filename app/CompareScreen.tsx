@@ -6,9 +6,13 @@ import { ComparePayrollRequest } from "@/src/domain/Payroll/payrollTypes";
 import { getPayrollErrorMessage } from "@/src/hooks/useCalculatePayroll";
 import { useComparePayroll } from "@/src/hooks/useComparePayroll";
 import { useState } from "react";
-import { Text } from "react-native";
+import { RefreshControl, Text } from "react-native";
 
 const DEFAULT_CALCULATION_YEAR = 2026;
+const INITIAL_COMPARE_FORM = {
+  firstSalary: "",
+  secondSalary: "",
+};
 
 function parseCurrencyInput(value: string) {
   const normalized = value.replace(/\./g, "").replace(",", ",").trim();
@@ -20,13 +24,28 @@ function parseCurrencyInput(value: string) {
 }
 
 export default function CompareScreen() {
-  const [firstSalary, setFirstSalary] = useState("");
-  const [secondSalary, setSecondSalary] = useState("");
+  const [firstSalary, setFirstSalary] = useState(
+    INITIAL_COMPARE_FORM.firstSalary,
+  );
+  const [secondSalary, setSecondSalary] = useState(
+    INITIAL_COMPARE_FORM.secondSalary,
+  );
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const comparePayrollMutation = useComparePayroll();
 
   const canCompare = firstSalary.trim() !== "" && secondSalary.trim() !== "";
+
+  function resetCompareForm() {
+    setFirstSalary(INITIAL_COMPARE_FORM.firstSalary);
+    setSecondSalary(INITIAL_COMPARE_FORM.secondSalary);
+    setErrorMessage(null);
+  }
+
+  function handlePullToReset() {
+    resetCompareForm();
+    comparePayrollMutation.reset();
+  }
 
   async function handleCompare() {
     const payload: ComparePayrollRequest = {
@@ -53,6 +72,7 @@ export default function CompareScreen() {
 
     try {
       await comparePayrollMutation.mutateAsync(payload);
+      resetCompareForm();
     } catch (error) {
       const message = getPayrollErrorMessage(error, "comparar");
       setErrorMessage(message);
@@ -62,7 +82,12 @@ export default function CompareScreen() {
   const comparisonResult = comparePayrollMutation.data;
 
   return (
-    <Screen scrollable>
+    <Screen
+      scrollable
+      refreshControl={
+        <RefreshControl refreshing={false} onRefresh={handlePullToReset} />
+      }
+    >
       <Text className="text-4xl font-roboto-bold">Comparar propostas</Text>
       <Text className="text-lg font-roboto color-subtitle mt-2 mb-8">
         Veja a diferença real entre dois salários

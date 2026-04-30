@@ -18,9 +18,9 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Text } from "react-native";
+import { RefreshControl, Text } from "react-native";
 
-const $default_values: simulatorScreenSchemaInput = {
+const INITIAL_SIMULATION_FORM: simulatorScreenSchemaInput = {
   grossSalary: "",
   dependents: "",
   transportationVoucherPercentage: "6",
@@ -34,15 +34,25 @@ export default function SimulatorScreen() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const calculatePayrollMutation = useCalculatePayroll();
 
-  const { control, handleSubmit, formState } = useForm<
+  const { control, handleSubmit, formState, reset } = useForm<
     simulatorScreenSchemaInput,
     unknown,
     simulatorScreenSchemaType
   >({
     resolver: zodResolver(simulatorScreenSchema),
-    defaultValues: $default_values,
+    defaultValues: INITIAL_SIMULATION_FORM,
     mode: "onChange",
   });
+
+  function resetSimulationForm() {
+    reset(INITIAL_SIMULATION_FORM);
+    setErrorMessage(null);
+  }
+
+  function handlePullToReset() {
+    resetSimulationForm();
+    setResult(null);
+  }
 
   async function onSubmit(data: simulatorScreenSchemaType) {
     const transportationVoucherDeduction =
@@ -63,6 +73,7 @@ export default function SimulatorScreen() {
     try {
       const response = await calculatePayrollMutation.mutateAsync(payload);
       setResult(response);
+      resetSimulationForm();
       console.log("[Payroll] calculate success", response);
     } catch (error) {
       const message = getPayrollErrorMessage(error);
@@ -74,7 +85,12 @@ export default function SimulatorScreen() {
   }
 
   return (
-    <Screen scrollable>
+    <Screen
+      scrollable
+      refreshControl={
+        <RefreshControl refreshing={false} onRefresh={handlePullToReset} />
+      }
+    >
       <CardInputForm
         control={control}
         name="grossSalary"
