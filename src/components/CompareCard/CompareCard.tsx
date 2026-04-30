@@ -1,3 +1,4 @@
+import { formatCurrency, formatDeductionCurrency } from "@/src/utils/currency";
 import React from "react";
 import { StyleProp, Text, View, ViewStyle } from "react-native";
 import { Input, InputProps } from "../Input/Input";
@@ -68,20 +69,14 @@ export function CompareCard({
             <View className="flex-row items-center justify-between mb-2">
               <Text className="font-roboto color-secondary">INSS (Teto)</Text>
               <Text className="font-roboto-medium color-deduction">
-                - R${" "}
-                {inssValue?.toLocaleString("pt-BR", {
-                  minimumFractionDigits: 2,
-                })}
+                {formatDeductionCurrency(inssValue)}
               </Text>
             </View>
 
             <View className="flex-row items-center justify-between">
               <Text className="font-roboto color-secondary">IRRF Estimado</Text>
               <Text className="font-roboto-medium color-deduction">
-                - R${" "}
-                {irrfValue?.toLocaleString("pt-BR", {
-                  minimumFractionDigits: 2,
-                })}
+                {formatDeductionCurrency(irrfValue)}
               </Text>
             </View>
           </View>
@@ -95,8 +90,7 @@ export function CompareCard({
             <Text
               className={`text-2xl font-roboto-bold ${type === "secondary" ? "color-green-900" : "color-black"}`}
             >
-              R${" "}
-              {netSalary?.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+              {formatCurrency(netSalary)}
             </Text>
           </View>
         </>

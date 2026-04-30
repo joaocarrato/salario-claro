@@ -2,26 +2,16 @@ import { Button } from "@/src/components/Button/Button";
 import { CompareCard } from "@/src/components/CompareCard/CompareCard";
 import { DifferenceCard } from "@/src/components/DifferenceCard/DifferenceCard";
 import Screen from "@/src/components/Screen/Screen";
-import { ComparePayrollRequest } from "@/src/domain/Payroll/payrollTypes";
+import { buildComparePayrollPayload } from "@/src/domain/Payroll/payrollPayloadBuilders";
 import { getPayrollErrorMessage } from "@/src/hooks/useCalculatePayroll";
 import { useComparePayroll } from "@/src/hooks/useComparePayroll";
 import { useState } from "react";
 import { RefreshControl, Text } from "react-native";
 
-const DEFAULT_CALCULATION_YEAR = 2026;
 const INITIAL_COMPARE_FORM = {
   firstSalary: "",
   secondSalary: "",
 };
-
-function parseCurrencyInput(value: string) {
-  const normalized = value.replace(/\./g, "").replace(",", ",").trim();
-
-  if (!normalized) return 0;
-
-  const parsed = Number(normalized);
-  return Number.isNaN(parsed) ? 0 : parsed;
-}
 
 export default function CompareScreen() {
   const [firstSalary, setFirstSalary] = useState(
@@ -48,25 +38,7 @@ export default function CompareScreen() {
   }
 
   async function handleCompare() {
-    const payload: ComparePayrollRequest = {
-      first: {
-        gross_salary: parseCurrencyInput(firstSalary),
-        dependents: null,
-        transport_discount: null,
-        meal_discount: null,
-        health_plan_discount: null,
-        other_discounts: null,
-      },
-      second: {
-        gross_salary: parseCurrencyInput(secondSalary),
-        dependents: null,
-        transport_discount: null,
-        meal_discount: null,
-        health_plan_discount: null,
-        other_discounts: null,
-      },
-      calculation_year: DEFAULT_CALCULATION_YEAR,
-    };
+    const payload = buildComparePayrollPayload(firstSalary, secondSalary);
 
     setErrorMessage(null);
 

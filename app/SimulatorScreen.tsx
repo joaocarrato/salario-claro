@@ -2,10 +2,8 @@ import { Button } from "@/src/components/Button/Button";
 import { CardInputForm } from "@/src/components/CardInputForm/CardInputForm";
 import { NetSalaryCard } from "@/src/components/NetSalaryCard/NetSalaryCard";
 import Screen from "@/src/components/Screen/Screen";
-import {
-  CalculatePayrollRequest,
-  PayrollCalculationResult,
-} from "@/src/domain/Payroll/payrollTypes";
+import { buildCalculatePayrollPayload } from "@/src/domain/Payroll/payrollPayloadBuilders";
+import { PayrollCalculationResult } from "@/src/domain/Payroll/payrollTypes";
 import {
   getPayrollErrorMessage,
   useCalculatePayroll,
@@ -55,18 +53,7 @@ export default function SimulatorScreen() {
   }
 
   async function onSubmit(data: simulatorScreenSchemaType) {
-    const transportationVoucherDeduction =
-      data.grossSalary * (data.transportationVoucherPercentage / 100);
-
-    const payload: CalculatePayrollRequest = {
-      gross_salary: data.grossSalary,
-      dependents: data.dependents,
-      transport_discount: transportationVoucherDeduction,
-      meal_discount: data.mealVoucher,
-      health_plan_discount: data.healthPlan,
-      other_discounts: data.otherDeductions,
-      calculation_year: 2026,
-    };
+    const payload = buildCalculatePayrollPayload(data);
 
     setErrorMessage(null);
 
@@ -74,14 +61,10 @@ export default function SimulatorScreen() {
       const response = await calculatePayrollMutation.mutateAsync(payload);
       setResult(response);
       resetSimulationForm();
-      console.log("[Payroll] calculate success", response);
     } catch (error) {
       const message = getPayrollErrorMessage(error);
       setErrorMessage(message);
-      console.log("[Payroll] calculate error", error);
     }
-
-    console.log("Backend payload:", payload);
   }
 
   return (

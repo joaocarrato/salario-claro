@@ -1,3 +1,4 @@
+import { formatCurrency } from "@/src/utils/currency";
 import React from "react";
 import { Text, View } from "react-native";
 
@@ -51,17 +52,6 @@ export function DifferenceCard({
       </View>
     </View>
   );
-}
-
-function formatCurrency(value: number) {
-  const formattedValue = new Intl.NumberFormat("pt-BR", {
-    style: "currency",
-    currency: "BRL",
-  })
-    .format(Math.abs(value))
-    .replace(/\u00a0/g, " ");
-
-  return value < 0 ? `- ${formattedValue}` : formattedValue;
 }
 
 function Divider() {

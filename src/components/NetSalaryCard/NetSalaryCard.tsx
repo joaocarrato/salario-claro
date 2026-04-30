@@ -1,4 +1,5 @@
 import WalletIcon from "@/src/assets/Icon/WalletIcon";
+import { formatCurrency, formatDeductionCurrency } from "@/src/utils/currency";
 import React from "react";
 import { Text, View } from "react-native";
 
@@ -23,8 +24,7 @@ export function NetSalaryCard({
             SALÁRIO LÍQUIDO ESTIMADO
           </Text>
           <Text className="text-4xl font-roboto-bold color-primary">
-            R${" "}
-            {netSalary?.toLocaleString("pt-BR", { minimumFractionDigits: 2 })}
+            {formatCurrency(netSalary)}
           </Text>
         </View>
 
@@ -59,8 +59,7 @@ function FormatCurrency({ value, label }: formatCurrencyProps) {
     <View className="items-center">
       <Text className="text-md font-roboto-bold color-subtitle">{label}</Text>
       <Text className="text-lg font-roboto-bold color-deduction text-center">
-        - R$ {`\n`}
-        {value}
+        {formatDeductionCurrency(value)}
       </Text>
     </View>
   );
