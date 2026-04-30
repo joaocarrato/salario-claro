@@ -1,9 +1,6 @@
 import { TabIconConfig } from "./TabBarIcon";
 
-export type TabRouteName =
-  | "SimulatorScreen"
-  | "CompareScreen"
-  | "HistoryScreen";
+export type TabRouteName = "index" | "CompareScreen" | "HistoryScreen";
 
 export type TabRoute = {
   name: TabRouteName;
@@ -13,7 +10,7 @@ export type TabRoute = {
 
 export const TAB_ROUTES: TabRoute[] = [
   {
-    name: "SimulatorScreen",
+    name: "index",
     icon: {
       default: "graph",
     },

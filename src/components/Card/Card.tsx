@@ -64,7 +64,12 @@ export default function Card({
             style={{ marginLeft: -4, marginRight: 8 }}
           />
         )}
-        <TextInput ref={inputRef} style={$inputStyle} {...textInputProps} />
+        <TextInput
+          ref={inputRef}
+          placeholderTextColor={"#6E7583"}
+          style={$inputStyle}
+          {...textInputProps}
+        />
       </View>
     </Pressable>
   );
