@@ -46,7 +46,7 @@ export default function CompareScreen() {
       await comparePayrollMutation.mutateAsync(payload);
       resetCompareForm();
     } catch (error) {
-      const message = getPayrollErrorMessage(error, "comparar");
+      const message = getPayrollErrorMessage(error, "comparar os salários");
       setErrorMessage(message);
     }
   }
