@@ -4,7 +4,7 @@
     "slug": "salario-claro",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/icon.png",
+    "icon": "./assets/images/adaptive-icon.png",
     "scheme": "salarioclaro",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -101,6 +101,12 @@
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
+    },
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "909961c9-e704-4224-aabe-9649fd755c90"
+      }
     }
   }
 }
