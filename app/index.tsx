@@ -160,7 +160,7 @@ export default function SimulatorScreen() {
             : "Calcular salário"
         }
         iconName="calculator"
-        style={{ marginBottom: 16, marginTop: result ? 16 : 0 }}
+        style={{ marginBottom: 16, marginTop: result ? 0 : 16 }}
         variant={!formState.isValid ? "disabled" : "primary"}
         disabled={!formState.isValid || calculatePayrollMutation.isPending}
         onPress={handleSubmit(onSubmit)}
