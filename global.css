@@ -1,2 +1,24 @@
-@import "tailwindcss";
+@import "tailwindcss/theme.css" layer(theme);
+@import "tailwindcss/preflight.css" layer(base);
+@import "tailwindcss/utilities.css";
 @import "nativewind/theme";
+
+@theme {
+  --color-background: "#F8F9FA";
+  --color-primary: "#00685F";
+  --color-primary-contrast: "#FFFFFF";
+  --color-secondary: "#3D4947";
+  --color-surface: "#E1E3E4";
+  --color-deduction: "#BA1A1A";
+  --color-success: "#008378";
+  --color-container: "#BCC9C6";
+  --color-subtitle: "#6D7A77";
+  --color-propose: "#6E7583";
+
+  --font-roboto: "Roboto Regular";
+  --font-roboto-medium: "Roboto Medium";
+  --font-roboto-bold: "Roboto Bold";
+
+  --font-playfair: "Playfair Display";
+  --font-playfair-bold: "Playfair Display Bold";
+}
