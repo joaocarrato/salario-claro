@@ -22,6 +22,7 @@ export function Input({ label, errorMessage, ...props }: InputProps) {
         <Text className="text-lg color-black">R$</Text>
         <TextInput
           ref={inputRef}
+          placeholderTextColor={"#6E7583"}
           style={{ fontFamily: "Roboto Regular" }}
           {...props}
         />
