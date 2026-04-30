@@ -1,6 +1,7 @@
 import { formatCurrency } from "@/src/utils/currency";
 import React from "react";
 import { Text, View } from "react-native";
+import { getNetSalaryWinnerMessage } from "./proposalComparison";
 
 type Props = {
   firstNetSalary: number;
@@ -17,12 +18,10 @@ export function DifferenceCard({
   grossSalaryDifference,
   deductionDifference,
 }: Props) {
-  const netSalaryWinnerMessage =
-    firstNetSalary > secondNetSalary
-      ? "A proposta A paga mais no líquido"
-      : secondNetSalary > firstNetSalary
-        ? "A proposta B paga mais no líquido"
-        : "As duas propostas pagam o mesmo líquido";
+  const netSalaryWinnerMessage = getNetSalaryWinnerMessage(
+    firstNetSalary,
+    secondNetSalary,
+  );
 
   return (
     <View className="bg-white p-6 rounded-lg shadow-sm mb-6">

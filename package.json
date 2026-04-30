@@ -8,7 +8,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "lint": "expo lint app"
+    "lint": "expo lint app",
+    "test": "jest"
   },
   "dependencies": {
     "@expo/vector-icons": "^15.0.3",
@@ -49,13 +50,16 @@
   "devDependencies": {
     "@tailwindcss/postcss": "^4.2.4",
     "@tanstack/eslint-plugin-query": "^5.100.6",
+    "@types/jest": "^30.0.0",
     "@types/react": "~19.1.0",
     "eslint": "^9.25.0",
     "eslint-config-expo": "~10.0.0",
+    "jest": "^30.3.0",
     "postcss": "^8.5.12",
     "prettier-plugin-tailwindcss": "^0.7.3",
     "reactotron-react-native": "^5.1.18",
     "tailwindcss": "^4.2.4",
+    "ts-jest": "^29.4.9",
     "typescript": "~5.9.2"
   },
   "private": true,
