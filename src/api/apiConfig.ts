@@ -1,6 +1,6 @@
+import axios from "axios";
 import Constants from "expo-constants";
 import { Platform } from "react-native";
-import axios from "axios";
 
 export const API_TIMEOUT_MS = 10000;
 
@@ -12,10 +12,10 @@ function getApiBaseUrl() {
   }
 
   if (Platform.OS === "android") {
-    return "http://10.0.2.2:8080/api";
+    return "https://salario-claro-backend.onrender.com/api";
   }
 
-  return "http://localhost:8080/api";
+  return "https://salario-claro-backend.onrender.com/api";
 }
 
 const apiBaseUrl = getApiBaseUrl();
