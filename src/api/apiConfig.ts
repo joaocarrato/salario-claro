@@ -2,6 +2,8 @@ import Constants from "expo-constants";
 import { Platform } from "react-native";
 import axios from "axios";
 
+export const API_TIMEOUT_MS = 10000;
+
 function getApiBaseUrl() {
   const fromEnv = process.env.EXPO_PUBLIC_API_URL;
 
@@ -27,4 +29,8 @@ if (__DEV__) {
 
 export const api = axios.create({
   baseURL: apiBaseUrl,
+  timeout: API_TIMEOUT_MS,
+  headers: {
+    "Content-Type": "application/json",
+  },
 });

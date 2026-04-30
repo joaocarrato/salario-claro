@@ -1,50 +1,173 @@
-# Welcome to your Expo app 👋
+# Salario Claro
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+Salario Claro is a React Native / Expo mobile app for Brazilian workers who want to estimate net salary and compare job offers. It consumes a payroll backend API to calculate deductions and show a clearer view of what each salary means after discounts.
 
-## Get started
+The project is intentionally lightweight: screens handle user interaction, reusable components handle UI blocks, and API logic stays in small service and hook layers.
 
-1. Install dependencies
+## Project status
 
-   ```bash
-   npm install
-   ```
+Implemented:
 
-2. Start the app
+- Salary simulation through the payroll API
+- Job offer comparison between two gross salaries
+- Deduction breakdown for INSS, IRRF, and benefit-related discounts
+- Loading and readable error states for API requests
+- Pull-to-reset behavior on the main flows
+- Keyboard-aware mobile forms
+- Shared currency formatting for Brazilian Real
+- Unit tests for pure helpers and API error formatting
 
-   ```bash
-   npx expo start
-   ```
+Planned:
 
-In the output, you'll find options to open the app in a
+- History screen
+- Saving previous simulations
+- More detailed explanations for payroll rules
+- Store publishing preparation
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
+## Features
 
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
+- Net salary simulation from gross salary and deductions
+- Job offer comparison using two salary proposals
+- Dynamic comparison message showing which proposal pays more in net salary
+- Deduction display for INSS, IRRF, transport, meal, health plan, and other discounts
+- Typed API integration with Axios and TanStack Query mutations
+- Form reset after successful API calls
+- Failed requests keep the current form inputs
+- Loading states that prevent duplicate submits
+- Pull-to-reset on simulation and comparison screens
 
-## Get a fresh project
+## Tech stack
 
-When you're ready, run:
+- React Native
+- Expo and Expo Router
+- TypeScript
+- Axios
+- TanStack Query
+- React Hook Form
+- Zod
+- NativeWind / Tailwind-style class names
+- React Native Keyboard Controller
+- React Navigation bottom tabs
+- Jest and ts-jest
+- ESLint with Expo config
+
+## Architecture overview
+
+The app uses a simple structure that keeps responsibilities separated without adding unnecessary layers.
+
+- `app/`: Expo Router screens and root layout
+- `src/components/`: reusable UI components such as cards, buttons, inputs, and result cards
+- `src/domain/Payroll/`: payroll API service functions, payload builders, and TypeScript contracts
+- `src/hooks/`: TanStack Query mutation hooks
+- `src/api/`: shared Axios configuration and API error formatting
+- `src/schema/`: form validation and input parsing schemas
+- `src/utils/`: pure helpers such as currency formatting
+- `src/navigation/`: bottom tab configuration
+
+Screens own UI state and user interactions. Services call the backend. Hooks connect services to TanStack Query. Types describe the API contracts. Utils contain small pure functions that are easy to test.
+
+## API integration
+
+The app expects a backend API running on port `8080` with base path `/api`.
+
+Main endpoints used by the app:
+
+- `POST /payroll/calculate`
+- `POST /payroll/compare`
+
+The shared Axios instance lives in `src/api/apiConfig.ts`. Payroll-specific requests live in `src/domain/Payroll/payrollApi.ts`.
+
+Default API URLs:
+
+- Android Emulator: `http://10.0.2.2:8080/api`
+- iOS Simulator and web: `http://localhost:8080/api`
+
+For a physical device, use your computer LAN IP:
 
 ```bash
-npm run reset-project
+EXPO_PUBLIC_API_URL=http://YOUR_LAN_IP:8080/api npm start
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+If Axios shows `Network Error`, check that:
 
-## Learn more
+- the backend is running on port `8080`
+- the URL includes `/api`
+- Android Emulator uses `10.0.2.2`, not `localhost`
+- the physical device and backend machine are on the same network
+- firewall or VPN settings are not blocking port `8080`
 
-To learn more about developing your project with Expo, look at the following resources:
+## Environment and configuration
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+The app supports this Expo public environment variable:
 
-## Join the community
+```bash
+EXPO_PUBLIC_API_URL=http://YOUR_API_HOST:8080/api
+```
 
-Join our community of developers creating universal apps.
+If the variable is not set, the app falls back to platform defaults defined in `src/api/apiConfig.ts`.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+## Getting started
+
+Install dependencies:
+
+```bash
+npm install
+```
+
+Start the Expo dev server:
+
+```bash
+npm start
+```
+
+Run on Android:
+
+```bash
+npm run android
+```
+
+Run on iOS:
+
+```bash
+npm run ios
+```
+
+Run on web:
+
+```bash
+npm run web
+```
+
+## Running tests
+
+Run the unit tests:
+
+```bash
+npm test
+```
+
+Run lint:
+
+```bash
+npm run lint
+```
+
+Current tests cover currency formatting, payroll payload builders, proposal comparison messaging, and API error formatting.
+
+## Screenshots
+
+Screenshots will be added soon.
+
+## Technical highlights
+
+- Typed integration with payroll API endpoints
+- Shared Axios client with platform-aware base URL handling
+- TanStack Query mutations for calculate and compare flows
+- Mobile-friendly forms with keyboard handling and validation
+- Reusable screen, card, button, input, and result components
+- Pure helper extraction for formatting, payload building, and comparison logic
+- Focused unit tests for business logic that should not regress
+
+## License
+
+License not defined yet.
