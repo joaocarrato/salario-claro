@@ -20,7 +20,7 @@ export default function ScreenHeader() {
       </View>
 
       <View className="h-8 w-12 bg-primary rounded-full items-center justify-center ml-auto">
-        <Text className="text-sm font-robot color-white">CLT</Text>
+        <Text className="text-xs font-robot color-white">CLT</Text>
       </View>
     </View>
   );
