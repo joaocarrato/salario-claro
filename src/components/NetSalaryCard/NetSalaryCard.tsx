@@ -57,7 +57,7 @@ type formatCurrencyProps = {
 function FormatCurrency({ value, label }: formatCurrencyProps) {
   return (
     <View className="items-center">
-      <Text className="text-md font-roboto-bold color-subtitle">{label}</Text>
+      <Text className="font-roboto-bold color-subtitle">{label}</Text>
       <Text className="text-lg font-roboto-bold color-deduction text-center">
         {formatDeductionCurrency(value)}
       </Text>

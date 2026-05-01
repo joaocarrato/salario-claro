@@ -30,7 +30,7 @@ export function DifferenceCard({
       <Text className="text-4xl font-roboto-bold color-primary mb-2 self-center">
         {formatCurrency(netSalaryDifference)}
       </Text>
-      <Text className="text-md font-roboto-bold color-primary bg-green-200/40 rounded-2xl p-2 self-center mb-8">
+      <Text className="font-roboto-bold color-primary bg-green-200/40 rounded-2xl p-2 self-center mb-8">
         {netSalaryWinnerMessage}
       </Text>
 

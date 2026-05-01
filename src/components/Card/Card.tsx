@@ -18,7 +18,7 @@ const cardStyles = {
   },
   smallCard: {
     container: "bg-white rounded-lg p-4 shadow-sm",
-    text: "text-md font-roboto color-black mb-2",
+    text: "font-roboto color-black mb-2",
   },
 };
 

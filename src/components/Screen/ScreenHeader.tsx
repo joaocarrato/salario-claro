@@ -14,12 +14,12 @@ export default function ScreenHeader() {
         <Text className="font-roboto-bold text-xl color-primary">
           Salário Claro
         </Text>
-        <Text className="font-roboto text-md color-subtitle -mt-0.5">
+        <Text className="font-roboto color-subtitle -mt-0.5">
           Entenda seu salário líquido
         </Text>
       </View>
 
-      <View className="h-8 w-10 bg-primary rounded-full items-center justify-center ml-auto">
+      <View className="h-8 w-12 bg-primary rounded-full items-center justify-center ml-auto">
         <Text className="text-sm font-robot color-white">CLT</Text>
       </View>
     </View>

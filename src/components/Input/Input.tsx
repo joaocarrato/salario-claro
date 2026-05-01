@@ -14,7 +14,7 @@ export function Input({ label, errorMessage, ...props }: InputProps) {
   }
   return (
     <Pressable onPress={focusInput}>
-      <Text className="text-md color-subtitle font-roboto-medium">{label}</Text>
+      <Text className="color-subtitle font-roboto-medium">{label}</Text>
 
       <View
         className={`py-2 px-4 items-center  grow flex-wrap justify-between border ${errorMessage ? "border-red-500" : "border-gray-300"} rounded-md mt-2 flex-row`}
