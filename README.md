@@ -4,6 +4,25 @@ Salario Claro is a React Native / Expo mobile app for Brazilian workers who want
 
 The project is intentionally lightweight: screens handle user interaction, reusable components handle UI blocks, and API logic stays in small service and hook layers.
 
+## App Preview
+
+<p align="center">
+  <img src="./docs/media/simulation-screen.png" width="280" alt="Salary simulation screen with empty input fields" />
+  <img src="./docs/media/simulation-filled-screen.png" width="280" alt="Salary simulation screen filled with calculated net salary and deductions" />
+</p>
+
+<p align="center">
+  <strong>Simulation form</strong>
+  &nbsp;&nbsp;&nbsp;&nbsp;
+  <strong>Calculated result</strong>
+</p>
+
+### Demo Video
+
+<p align="center">
+  <img src="./docs/media/demo.gif" width="480" alt="Demo of the Salario Claro salary simulation app flow" />
+</p>
+
 ## Project status
 
 Implemented:
@@ -153,10 +172,6 @@ npm run lint
 ```
 
 Current tests cover currency formatting, payroll payload builders, proposal comparison messaging, and API error formatting.
-
-## Screenshots
-
-Screenshots will be added soon.
 
 ## Technical highlights
 
