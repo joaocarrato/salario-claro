@@ -10,7 +10,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
-import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
+import { KeyboardAvoidingView } from "react-native-keyboard-controller";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -111,24 +111,14 @@ export function BottomSheet({
           <Pressable className="flex-1" onPress={handleClose} />
         </Animated.View>
 
-        <Animated.View
-          className="bg-background rounded-t-2xl shadow-sm overflow-hidden"
-          style={[
-            { maxHeight: height * 0.72, minHeight: height * 0.4 },
-            sheetStyle,
-          ]}
-        >
-          <KeyboardAwareScrollView
-            className="px-5 pt-3"
-            contentContainerStyle={{ paddingBottom: 24 }}
-            bottomOffset={14}
-            keyboardShouldPersistTaps="handled"
-            showsVerticalScrollIndicator={false}
+        <KeyboardAvoidingView behavior="translate-with-padding">
+          <Animated.View
+            className="bg-background rounded-t-2xl shadow-sm overflow-hidden px-5 pt-5 pb-6"
+            style={[
+              { height: height * 0.42, maxHeight: height * 0.72 },
+              sheetStyle,
+            ]}
           >
-            <View className="items-center mb-4">
-              <View className="h-1.5 w-12 rounded-full bg-container" />
-            </View>
-
             <View className="flex-row items-start mb-5">
               <View className="flex-1 pr-3">
                 <Text className="text-2xl font-roboto-bold color-secondary">
@@ -144,41 +134,43 @@ export function BottomSheet({
               </Pressable>
             </View>
 
-            <InputForm
-              control={control}
-              name="title"
-              label="Título"
-              placeholder="Proposta Empresa X"
-              prefix={null}
-              returnKeyType="done"
-              rules={{
-                required: "Informe um título para salvar.",
-                validate: (value) =>
-                  value.trim().length > 0 || "Informe um título para salvar.",
-              }}
-            />
+            <View className="flex-1">
+              <InputForm
+                control={control}
+                name="title"
+                label="Título"
+                placeholder="Proposta Empresa X"
+                prefix={null}
+                returnKeyType="done"
+                rules={{
+                  required: "Informe um título para salvar.",
+                  validate: (value) =>
+                    value.trim().length > 0 || "Informe um título para salvar.",
+                }}
+              />
 
-            <Text className="color-subtitle font-roboto-medium mt-5 mb-2">
-              Tag
-            </Text>
-            <Controller
-              control={control}
-              name="tag"
-              render={({ field }) => (
-                <View className="flex-row gap-2">
-                  {TAG_OPTIONS.map((tag) => (
-                    <TagButton
-                      key={tag.value}
-                      label={tag.label}
-                      selected={field.value === tag.value}
-                      onPress={() => field.onChange(tag.value)}
-                    />
-                  ))}
-                </View>
-              )}
-            />
+              <Text className="color-subtitle font-roboto-medium mt-5 mb-2">
+                Tag
+              </Text>
+              <Controller
+                control={control}
+                name="tag"
+                render={({ field }) => (
+                  <View className="flex-row gap-2">
+                    {TAG_OPTIONS.map((tag) => (
+                      <TagButton
+                        key={tag.value}
+                        label={tag.label}
+                        selected={field.value === tag.value}
+                        onPress={() => field.onChange(tag.value)}
+                      />
+                    ))}
+                  </View>
+                )}
+              />
+            </View>
 
-            <View className="flex-row gap-3 mt-6">
+            <View className="flex-row gap-3 pt-6">
               <View className="flex-1">
                 <Button
                   title="Cancelar"
@@ -197,8 +189,8 @@ export function BottomSheet({
                 />
               </View>
             </View>
-          </KeyboardAwareScrollView>
-        </Animated.View>
+          </Animated.View>
+        </KeyboardAvoidingView>
       </View>
     </Modal>
   );
