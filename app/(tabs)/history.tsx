@@ -1,7 +1,4 @@
-import {
-  HistoryCard,
-  HistoryCardData,
-} from "@/src/components/HistoryCard/HistoryCard";
+import { HistoryCard } from "@/src/components/HistoryCard/HistoryCard";
 import {
   ProposeCard,
   ProposeCardProps,
@@ -33,8 +30,8 @@ export default function HistoryScreen() {
   const deleteSimulationMutation = useDeleteSimulation();
   const latestCalculationQuery = useLatestPayrollCalculation();
   const latestHistorySimulation = useMemo(
-    () => getLatestHistorySimulation(simulations, latestCalculationQuery.data),
-    [latestCalculationQuery.data, simulations],
+    () => mapCalculationToHistoryCard(latestCalculationQuery.data),
+    [latestCalculationQuery.data],
   );
   const savedProposalCards = useMemo(
     () => mapSavedSimulationsToProposeCards(simulations),
@@ -154,55 +151,10 @@ function SwipeableSimulationCard({
   );
 }
 
-type HistorySimulationCandidate = HistoryCardData & {
-  time: number;
-};
-
 type SavedProposalCard = {
   id: string;
   props: ProposeCardProps;
 };
-
-function getLatestHistorySimulation(
-  simulations?: PayrollSimulation[],
-  latestCalculation?: LatestPayrollCalculation | null,
-) {
-  const savedSimulation = getLatestSavedSimulation(simulations);
-  const calculatedSimulation = latestCalculation
-    ? mapCalculationToHistoryCandidate(latestCalculation)
-    : null;
-
-  if (!savedSimulation) {
-    return calculatedSimulation;
-  }
-
-  if (!calculatedSimulation) {
-    return savedSimulation;
-  }
-
-  return calculatedSimulation.time > savedSimulation.time
-    ? calculatedSimulation
-    : savedSimulation;
-}
-
-function getLatestSavedSimulation(
-  simulations?: PayrollSimulation[],
-): HistorySimulationCandidate | null {
-  if (!simulations?.length) {
-    return null;
-  }
-
-  const latestSimulation = [...simulations].sort((first, second) => {
-    return getSimulationTime(second) - getSimulationTime(first);
-  })[0];
-
-  return {
-    grossSalary: parseSimulationNumber(latestSimulation.gross_salary),
-    netSalary: parseSimulationNumber(latestSimulation.net_salary),
-    createdAt: latestSimulation.created_at ?? latestSimulation.updated_at,
-    time: getSimulationTime(latestSimulation),
-  };
-}
 
 function mapSavedSimulationsToProposeCards(
   simulations?: PayrollSimulation[],
@@ -212,7 +164,9 @@ function mapSavedSimulationsToProposeCards(
   }
 
   return [...simulations]
-    .sort((first, second) => getSimulationTime(second) - getSimulationTime(first))
+    .sort(
+      (first, second) => getSimulationTime(second) - getSimulationTime(first),
+    )
     .map((simulation) => ({
       id: simulation.id,
       props: {
@@ -229,15 +183,17 @@ function mapSavedSimulationsToProposeCards(
     }));
 }
 
-function mapCalculationToHistoryCandidate({
-  result,
-  calculatedAt,
-}: LatestPayrollCalculation): HistorySimulationCandidate {
+function mapCalculationToHistoryCard(
+  latestCalculation?: LatestPayrollCalculation | null,
+) {
+  if (!latestCalculation) {
+    return null;
+  }
+
   return {
-    grossSalary: result.gross_salary,
-    netSalary: result.net_salary,
-    createdAt: calculatedAt,
-    time: getDateTime(calculatedAt),
+    grossSalary: latestCalculation.result.gross_salary,
+    netSalary: latestCalculation.result.net_salary,
+    createdAt: latestCalculation.calculatedAt,
   };
 }
 

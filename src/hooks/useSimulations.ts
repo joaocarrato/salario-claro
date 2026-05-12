@@ -7,6 +7,7 @@ export function useSimulations() {
   return useQuery<PayrollSimulation[]>({
     queryKey: simulationsQueryKey,
     queryFn: simulationApi.listSimulations,
+    refetchOnMount: true,
     staleTime: Infinity,
   });
 }

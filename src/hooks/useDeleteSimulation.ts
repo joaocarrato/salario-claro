@@ -1,5 +1,6 @@
 import { getApiErrorMessage } from "@/src/api/apiErrors";
 import { simulationApi } from "@/src/domain/Simulation/simulationApi";
+import { PayrollSimulation } from "@/src/domain/Simulation/simulationTypes";
 import { simulationsQueryKey } from "@/src/hooks/useCreateSimulation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -8,8 +9,23 @@ export function useDeleteSimulation() {
 
   return useMutation<void, Error, string, unknown>({
     mutationFn: simulationApi.deleteSimulation,
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: simulationsQueryKey });
+    onSuccess(_, deletedSimulationId) {
+      queryClient.setQueryData<PayrollSimulation[]>(
+        simulationsQueryKey,
+        (simulations) => {
+          if (!simulations) {
+            return simulations;
+          }
+
+          return simulations.filter(
+            (simulation) => simulation.id !== deletedSimulationId,
+          );
+        },
+      );
+      queryClient.invalidateQueries({
+        queryKey: simulationsQueryKey,
+        refetchType: "none",
+      });
     },
   });
 }

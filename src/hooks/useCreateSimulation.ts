@@ -18,8 +18,25 @@ export function useCreateSimulation() {
     unknown
   >({
     mutationFn: simulationApi.createSimulation,
-    onSuccess() {
-      queryClient.invalidateQueries({ queryKey: simulationsQueryKey });
+    onSuccess(createdSimulation) {
+      queryClient.setQueryData<PayrollSimulation[]>(
+        simulationsQueryKey,
+        (simulations) => {
+          if (!simulations) {
+            return [createdSimulation];
+          }
+
+          const simulationsWithoutDuplicate = simulations.filter(
+            (simulation) => simulation.id !== createdSimulation.id,
+          );
+
+          return [createdSimulation, ...simulationsWithoutDuplicate];
+        },
+      );
+      queryClient.invalidateQueries({
+        queryKey: simulationsQueryKey,
+        refetchType: "none",
+      });
     },
   });
 }

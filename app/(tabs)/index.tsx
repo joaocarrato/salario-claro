@@ -13,13 +13,13 @@ import {
 import { PayrollCalculationResult } from "@/src/domain/Payroll/payrollTypes";
 import { StoreSimulationRequest } from "@/src/domain/Simulation/simulationTypes";
 import {
-  getCreateSimulationErrorMessage,
-  useCreateSimulation,
-} from "@/src/hooks/useCreateSimulation";
-import {
   getPayrollErrorMessage,
   useCalculatePayroll,
 } from "@/src/hooks/useCalculatePayroll";
+import {
+  getCreateSimulationErrorMessage,
+  useCreateSimulation,
+} from "@/src/hooks/useCreateSimulation";
 import {
   simulatorScreenSchema,
   simulatorScreenSchemaInput,
@@ -123,6 +123,8 @@ export default function SimulatorScreen() {
         ...lastSimulationPayload,
         title: data.title.trim(),
       });
+      resetSimulationForm();
+      setResult(null);
       setLastSimulationPayload(null);
       setIsSaveSheetVisible(false);
       setSuccessMessage("Simulação salva com sucesso.");
@@ -249,7 +251,9 @@ export default function SimulatorScreen() {
           }
           iconName="save-outline"
           variant={!lastSimulationPayload ? "disabled" : "outline"}
-          disabled={!lastSimulationPayload || createSimulationMutation.isPending}
+          disabled={
+            !lastSimulationPayload || createSimulationMutation.isPending
+          }
           onPress={handleOpenSaveSheet}
         />
       ) : null}
