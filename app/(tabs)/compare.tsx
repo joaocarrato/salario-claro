@@ -74,7 +74,8 @@ export default function CompareScreen() {
         irrfValue={comparisonResult?.first.discounts.irrf}
         netSalary={comparisonResult?.first.net_salary}
         inputProps={{
-          placeholder: "1500",
+          prefix: null,
+          placeholder: "R$ 1500",
           keyboardType: "numeric",
           value: firstSalary,
           onChangeText: setFirstSalary,
@@ -90,7 +91,8 @@ export default function CompareScreen() {
         irrfValue={comparisonResult?.second.discounts.irrf}
         netSalary={comparisonResult?.second.net_salary}
         inputProps={{
-          placeholder: "2000",
+          prefix: null,
+          placeholder: "R$ 2000",
           keyboardType: "numeric",
           value: secondSalary,
           onChangeText: setSecondSalary,

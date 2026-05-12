@@ -38,7 +38,7 @@ const INITIAL_FORM_VALUES: BottomSheetFormData = {
   tag: "proposal",
 };
 
-const TAG_OPTIONS: Array<{ label: string; value: BottomSheetTag }> = [
+const TAG_OPTIONS: { label: string; value: BottomSheetTag }[] = [
   { label: "CLT", value: "clt" },
   { label: "Proposta", value: "proposal" },
   { label: "Salva", value: "saved" },
@@ -121,7 +121,7 @@ export function BottomSheet({
           <KeyboardAwareScrollView
             className="px-5 pt-3"
             contentContainerStyle={{ paddingBottom: 24 }}
-            bottomOffset={24}
+            bottomOffset={14}
             keyboardShouldPersistTaps="handled"
             showsVerticalScrollIndicator={false}
           >

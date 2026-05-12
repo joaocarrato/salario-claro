@@ -25,11 +25,13 @@ export function Input({
       <View
         className={`py-2 px-4 items-center  grow flex-wrap justify-between border ${errorMessage ? "border-red-500" : "border-gray-300"} rounded-md mt-2 flex-row`}
       >
-        {prefix ? <Text className="text-lg color-black">{prefix}</Text> : null}
+        {prefix ? (
+          <Text className="text-base color-black">{prefix}</Text>
+        ) : null}
         <TextInput
           ref={inputRef}
           placeholderTextColor={"#6E7583"}
-          style={{ flex: 1, fontFamily: "Roboto Regular" }}
+          style={{ flex: 1, fontFamily: "Roboto Regular", fontSize: 16 }}
           {...props}
         />
       </View>
