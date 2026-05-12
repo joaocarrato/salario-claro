@@ -1,7 +1,14 @@
-import { HistoryCard } from "@/src/components/HistoryCard/HistoryCard";
+import {
+  HistoryCard,
+  HistoryCardData,
+} from "@/src/components/HistoryCard/HistoryCard";
 import { ProposeCard } from "@/src/components/ProposeCard/ProposeCard";
 import Screen from "@/src/components/Screen/Screen";
 import { PayrollSimulation } from "@/src/domain/Simulation/simulationTypes";
+import {
+  LatestPayrollCalculation,
+  useLatestPayrollCalculation,
+} from "@/src/hooks/useCalculatePayroll";
 import { useSimulations } from "@/src/hooks/useSimulations";
 import { currentSalaryProposalMock } from "@/src/utils/proposeCardMock";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -16,9 +23,10 @@ export default function HistoryScreen() {
     isRefetching,
     refetch,
   } = useSimulations();
-  const latestSimulation = useMemo(
-    () => getLatestSimulation(simulations),
-    [simulations],
+  const latestCalculationQuery = useLatestPayrollCalculation();
+  const latestHistorySimulation = useMemo(
+    () => getLatestHistorySimulation(simulations, latestCalculationQuery.data),
+    [latestCalculationQuery.data, simulations],
   );
 
   const handleRefresh = useCallback(() => {
@@ -52,8 +60,8 @@ export default function HistoryScreen() {
         </Text>
       ) : null}
 
-      {latestSimulation ? (
-        <HistoryCard simulation={latestSimulation} />
+      {latestHistorySimulation ? (
+        <HistoryCard simulation={latestHistorySimulation} />
       ) : (
         !isLoading && <EmptyHistory />
       )}
@@ -63,19 +71,68 @@ export default function HistoryScreen() {
   );
 }
 
-function getLatestSimulation(simulations?: PayrollSimulation[]) {
+type HistorySimulationCandidate = HistoryCardData & {
+  time: number;
+};
+
+function getLatestHistorySimulation(
+  simulations?: PayrollSimulation[],
+  latestCalculation?: LatestPayrollCalculation | null,
+) {
+  const savedSimulation = getLatestSavedSimulation(simulations);
+  const calculatedSimulation = latestCalculation
+    ? mapCalculationToHistoryCandidate(latestCalculation)
+    : null;
+
+  if (!savedSimulation) {
+    return calculatedSimulation;
+  }
+
+  if (!calculatedSimulation) {
+    return savedSimulation;
+  }
+
+  return calculatedSimulation.time > savedSimulation.time
+    ? calculatedSimulation
+    : savedSimulation;
+}
+
+function getLatestSavedSimulation(
+  simulations?: PayrollSimulation[],
+): HistorySimulationCandidate | null {
   if (!simulations?.length) {
     return null;
   }
 
-  return [...simulations].sort((first, second) => {
+  const latestSimulation = [...simulations].sort((first, second) => {
     return getSimulationTime(second) - getSimulationTime(first);
   })[0];
+
+  return {
+    grossSalary: parseSimulationNumber(latestSimulation.gross_salary),
+    netSalary: parseSimulationNumber(latestSimulation.net_salary),
+    createdAt: latestSimulation.created_at ?? latestSimulation.updated_at,
+    time: getSimulationTime(latestSimulation),
+  };
+}
+
+function mapCalculationToHistoryCandidate({
+  result,
+  calculatedAt,
+}: LatestPayrollCalculation): HistorySimulationCandidate {
+  return {
+    grossSalary: result.gross_salary,
+    netSalary: result.net_salary,
+    createdAt: calculatedAt,
+    time: getDateTime(calculatedAt),
+  };
 }
 
 function getSimulationTime(simulation: PayrollSimulation) {
-  const date = simulation.created_at ?? simulation.updated_at;
+  return getDateTime(simulation.created_at ?? simulation.updated_at);
+}
 
+function getDateTime(date: string | null) {
   if (!date) {
     return 0;
   }
@@ -83,6 +140,12 @@ function getSimulationTime(simulation: PayrollSimulation) {
   const time = new Date(date).getTime();
 
   return Number.isNaN(time) ? 0 : time;
+}
+
+function parseSimulationNumber(value: string) {
+  const parsedValue = Number(value);
+
+  return Number.isFinite(parsedValue) ? parsedValue : 0;
 }
 
 function EmptyHistory() {

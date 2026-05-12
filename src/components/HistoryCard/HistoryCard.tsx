@@ -1,4 +1,3 @@
-import { PayrollSimulation } from "@/src/domain/Simulation/simulationTypes";
 import { formatCurrency } from "@/src/utils/currency";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Octicons from "@expo/vector-icons/Octicons";
@@ -6,8 +5,14 @@ import { Link } from "expo-router";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
+export type HistoryCardData = {
+  grossSalary: number;
+  netSalary: number;
+  createdAt: string | null;
+};
+
 type HistoryCardProps = {
-  simulation: PayrollSimulation;
+  simulation: HistoryCardData;
 };
 
 export const HistoryCard = React.memo(function HistoryCard({
@@ -27,7 +32,7 @@ export const HistoryCard = React.memo(function HistoryCard({
           </Text>
         </View>
         <Text className="text-sm font-roboto color-subtitle ml-auto">
-          {formatHistoryDate(simulation.created_at)}
+          {formatHistoryDate(simulation.createdAt)}
         </Text>
       </View>
 
@@ -36,14 +41,14 @@ export const HistoryCard = React.memo(function HistoryCard({
       </Text>
 
       <Text className="text-4xl font-roboto-bold mt-1">
-        {formatCurrency(parseSimulationNumber(simulation.net_salary))}
+        {formatCurrency(simulation.netSalary)}
       </Text>
 
       <Divider />
 
       <Text className="text-lg font-roboto color-subtitle">Salário bruto</Text>
       <Text className="text-2xl font-roboto-bold mt-1 color-secondary">
-        {formatCurrency(parseSimulationNumber(simulation.gross_salary))}
+        {formatCurrency(simulation.grossSalary)}
       </Text>
 
       <Link href="/simulation-details" asChild>
@@ -61,12 +66,6 @@ export const HistoryCard = React.memo(function HistoryCard({
 
 function Divider() {
   return <View className="h-0.5 bg-gray-200 my-6" />;
-}
-
-function parseSimulationNumber(value: string) {
-  const parsedValue = Number(value);
-
-  return Number.isFinite(parsedValue) ? parsedValue : 0;
 }
 
 function formatHistoryDate(value: string | null) {
