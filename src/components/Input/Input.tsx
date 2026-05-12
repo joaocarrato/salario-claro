@@ -1,12 +1,26 @@
 import React from "react";
-import { Pressable, Text, TextInput, TextInputProps, View } from "react-native";
+import {
+  Pressable,
+  StyleProp,
+  Text,
+  TextInput,
+  TextInputProps,
+  TextStyle,
+  View,
+} from "react-native";
 
 export interface InputProps extends TextInputProps {
   label?: string;
   errorMessage?: string;
+  prefix?: string | null;
 }
 
-export function Input({ label, errorMessage, ...props }: InputProps) {
+export function Input({
+  label,
+  errorMessage,
+  prefix = "R$",
+  ...props
+}: InputProps) {
   const inputRef = React.useRef<TextInput>(null);
 
   function focusInput() {
@@ -19,11 +33,13 @@ export function Input({ label, errorMessage, ...props }: InputProps) {
       <View
         className={`py-2 px-4 items-center  grow flex-wrap justify-between border ${errorMessage ? "border-red-500" : "border-gray-300"} rounded-md mt-2 flex-row`}
       >
-        <Text className="text-lg color-black">R$</Text>
+        {prefix ? (
+          <Text className="text-base color-black">{prefix}</Text>
+        ) : null}
         <TextInput
           ref={inputRef}
           placeholderTextColor={"#6E7583"}
-          style={{ fontFamily: "Roboto Regular" }}
+          style={$inputStyle}
           {...props}
         />
       </View>
@@ -33,3 +49,13 @@ export function Input({ label, errorMessage, ...props }: InputProps) {
     </Pressable>
   );
 }
+
+const $inputStyle: StyleProp<TextStyle> = {
+  flex: 1,
+  fontFamily: "Roboto Regular",
+  fontSize: 16,
+  color: "#000",
+  height: 40,
+  paddingVertical: 0,
+  textAlignVertical: "center",
+};

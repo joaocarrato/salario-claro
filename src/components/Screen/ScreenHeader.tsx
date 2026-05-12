@@ -3,7 +3,7 @@ import { Image, Text, View } from "react-native";
 export default function ScreenHeader() {
   return (
     <View className="py-2.5 flex-row items-center gap-x-2 border-b px-5 border-gray-200 mb-6 shadow-sm bg-white">
-      <View className="h-12 w-12 bg-green-950/40 rounded-full">
+      <View className="h-12 w-12 bg-primary/40 rounded-full">
         <Image
           source={require("../../assets/Icon/ProfileIcon.png")}
           className="h-full w-full rounded-full"

@@ -1,6 +1,6 @@
 import { TabIconConfig } from "./TabBarIcon";
 
-export type TabRouteName = "index" | "CompareScreen" | "HistoryScreen";
+export type TabRouteName = "index" | "compare" | "history";
 
 export type TabRoute = {
   name: TabRouteName;
@@ -17,10 +17,17 @@ export const TAB_ROUTES: TabRoute[] = [
     label: "Simulador",
   },
   {
-    name: "CompareScreen",
+    name: "compare",
     icon: {
       default: "arrow-switch",
     },
     label: "Comparação",
+  },
+  {
+    name: "history",
+    icon: {
+      default: "history",
+    },
+    label: "Histórico",
   },
 ];

@@ -1,3 +1,4 @@
+import { OverlayIcon } from "@/src/assets/Icon/OverlayIcon";
 import { formatCurrency, formatDeductionCurrency } from "@/src/utils/currency";
 import React from "react";
 import { StyleProp, Text, View, ViewStyle } from "react-native";
@@ -5,15 +6,14 @@ import { Input, InputProps } from "../Input/Input";
 
 const $compareStyles = {
   primary: {
-    container: "bg-gray-300 h-9 w-9 items-center justify-center rounded-2xl",
-    text: "text-xl color-gray-500 font-roboto",
+    container: "bg-propose/10 h-9 w-9 items-center justify-center rounded-2xl",
+    text: "text-xl color-propose font-roboto",
     label: "Proposta A",
     proposeType: "A",
   },
   secondary: {
-    container:
-      "bg-green-200/60 h-9 w-9 items-center justify-center rounded-2xl",
-    text: "text-xl color-green-700 font-roboto",
+    container: "bg-primary/20 h-9 w-9 items-center justify-center rounded-2xl",
+    text: "text-xl color-primary font-roboto",
     label: "Proposta B",
     proposeType: "B",
   },
@@ -41,12 +41,17 @@ export function CompareCard({
   inputProps,
 }: CompareCardProps) {
   const { container, text } = $compareStyles[type];
+  const isSecondary = type === "secondary";
 
   return (
     <View
-      className="p-6 border border-surface rounded-md bg-white"
+      className={`p-6 border border-surface rounded-md bg-white ${
+        isSecondary ? "relative overflow-hidden" : ""
+      }`}
       style={boxProps}
     >
+      {isSecondary ? <OverlayIcon /> : null}
+
       <View className="flex-row items-center">
         <View className={container}>
           <Text className={text}>{$compareStyles[type].proposeType}</Text>

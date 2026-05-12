@@ -3,6 +3,7 @@ import {
   ComparePayrollRequest,
   PayrollInput,
 } from "@/src/domain/Payroll/payrollTypes";
+import { StoreSimulationRequest } from "@/src/domain/Simulation/simulationTypes";
 import { simulatorScreenSchemaType } from "@/src/schema/simulatorScreenSchema";
 import { parseCurrencyInput } from "@/src/utils/currency";
 
@@ -22,6 +23,15 @@ export function buildCalculatePayrollPayload(
     health_plan_discount: data.healthPlan,
     other_discounts: data.otherDeductions,
     calculation_year: DEFAULT_CALCULATION_YEAR,
+  };
+}
+
+export function buildStoreSimulationPayload(
+  data: simulatorScreenSchemaType,
+): StoreSimulationRequest {
+  return {
+    ...buildCalculatePayrollPayload(data),
+    title: "Simulação de salário",
   };
 }
 
