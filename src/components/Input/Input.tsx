@@ -1,5 +1,13 @@
 import React from "react";
-import { Pressable, Text, TextInput, TextInputProps, View } from "react-native";
+import {
+  Pressable,
+  StyleProp,
+  Text,
+  TextInput,
+  TextInputProps,
+  TextStyle,
+  View,
+} from "react-native";
 
 export interface InputProps extends TextInputProps {
   label?: string;
@@ -31,7 +39,7 @@ export function Input({
         <TextInput
           ref={inputRef}
           placeholderTextColor={"#6E7583"}
-          style={{ flex: 1, fontFamily: "Roboto Regular", fontSize: 16 }}
+          style={$inputStyle}
           {...props}
         />
       </View>
@@ -41,3 +49,13 @@ export function Input({
     </Pressable>
   );
 }
+
+const $inputStyle: StyleProp<TextStyle> = {
+  flex: 1,
+  fontFamily: "Roboto Regular",
+  fontSize: 16,
+  color: "#000",
+  height: 40,
+  paddingVertical: 0,
+  textAlignVertical: "center",
+};

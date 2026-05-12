@@ -79,6 +79,7 @@ export default function CompareScreen() {
           keyboardType: "numeric",
           value: firstSalary,
           onChangeText: setFirstSalary,
+          returnKeyType: "done",
         }}
       />
 

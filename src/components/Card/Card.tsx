@@ -67,6 +67,7 @@ export default function Card({
         <TextInput
           ref={inputRef}
           placeholderTextColor={"#6E7583"}
+          returnKeyType="done"
           style={$inputStyle}
           {...textInputProps}
         />
