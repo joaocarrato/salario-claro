@@ -23,4 +23,11 @@ export const TAB_ROUTES: TabRoute[] = [
     },
     label: "Comparação",
   },
+  {
+    name: "HistoryScreen",
+    icon: {
+      default: "history",
+    },
+    label: "Histórico",
+  },
 ];
