@@ -37,10 +37,7 @@ export default function HistoryScreen() {
     <Screen
       scrollable
       refreshControl={
-        <RefreshControl
-          refreshing={isRefetching}
-          onRefresh={handleRefresh}
-        />
+        <RefreshControl refreshing={isRefetching} onRefresh={handleRefresh} />
       }
     >
       <Text className="text-4xl font-roboto-bold">Histórico</Text>

@@ -4,9 +4,15 @@ import { Pressable, Text, TextInput, TextInputProps, View } from "react-native";
 export interface InputProps extends TextInputProps {
   label?: string;
   errorMessage?: string;
+  prefix?: string | null;
 }
 
-export function Input({ label, errorMessage, ...props }: InputProps) {
+export function Input({
+  label,
+  errorMessage,
+  prefix = "R$",
+  ...props
+}: InputProps) {
   const inputRef = React.useRef<TextInput>(null);
 
   function focusInput() {
@@ -19,11 +25,11 @@ export function Input({ label, errorMessage, ...props }: InputProps) {
       <View
         className={`py-2 px-4 items-center  grow flex-wrap justify-between border ${errorMessage ? "border-red-500" : "border-gray-300"} rounded-md mt-2 flex-row`}
       >
-        <Text className="text-lg color-black">R$</Text>
+        {prefix ? <Text className="text-lg color-black">{prefix}</Text> : null}
         <TextInput
           ref={inputRef}
           placeholderTextColor={"#6E7583"}
-          style={{ fontFamily: "Roboto Regular" }}
+          style={{ flex: 1, fontFamily: "Roboto Regular" }}
           {...props}
         />
       </View>

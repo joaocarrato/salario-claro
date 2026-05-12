@@ -1,3 +1,7 @@
+import {
+  BottomSheet,
+  BottomSheetFormData,
+} from "@/src/components/BottomSheet/BottomSheet";
 import { Button } from "@/src/components/Button/Button";
 import { CardInputForm } from "@/src/components/CardInputForm/CardInputForm";
 import { NetSalaryCard } from "@/src/components/NetSalaryCard/NetSalaryCard";
@@ -40,6 +44,7 @@ export default function SimulatorScreen() {
   const [result, setResult] = useState<PayrollCalculationResult | null>(null);
   const [lastSimulationPayload, setLastSimulationPayload] =
     useState<StoreSimulationRequest | null>(null);
+  const [isSaveSheetVisible, setIsSaveSheetVisible] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const calculatePayrollMutation = useCalculatePayroll();
@@ -65,6 +70,7 @@ export default function SimulatorScreen() {
     resetSimulationForm();
     setResult(null);
     setLastSimulationPayload(null);
+    setIsSaveSheetVisible(false);
   }
 
   async function onSubmit(data: simulatorScreenSchemaType) {
@@ -86,7 +92,25 @@ export default function SimulatorScreen() {
     }
   }
 
-  async function handleSaveSimulation() {
+  function handleOpenSaveSheet() {
+    if (!lastSimulationPayload) {
+      return;
+    }
+
+    setErrorMessage(null);
+    setSuccessMessage(null);
+    setIsSaveSheetVisible(true);
+  }
+
+  function handleCloseSaveSheet() {
+    if (createSimulationMutation.isPending) {
+      return;
+    }
+
+    setIsSaveSheetVisible(false);
+  }
+
+  async function handleSaveSimulation(data: BottomSheetFormData) {
     if (!lastSimulationPayload || createSimulationMutation.isPending) {
       return;
     }
@@ -95,8 +119,12 @@ export default function SimulatorScreen() {
     setSuccessMessage(null);
 
     try {
-      await createSimulationMutation.mutateAsync(lastSimulationPayload);
+      await createSimulationMutation.mutateAsync({
+        ...lastSimulationPayload,
+        title: data.title.trim(),
+      });
       setLastSimulationPayload(null);
+      setIsSaveSheetVisible(false);
       setSuccessMessage("Simulação salva com sucesso.");
     } catch (error) {
       const message = getCreateSimulationErrorMessage(error);
@@ -222,10 +250,16 @@ export default function SimulatorScreen() {
           iconName="save-outline"
           variant={!lastSimulationPayload ? "disabled" : "outline"}
           disabled={!lastSimulationPayload || createSimulationMutation.isPending}
-          loading={createSimulationMutation.isPending}
-          onPress={handleSaveSimulation}
+          onPress={handleOpenSaveSheet}
         />
       ) : null}
+
+      <BottomSheet
+        visible={isSaveSheetVisible}
+        loading={createSimulationMutation.isPending}
+        onClose={handleCloseSaveSheet}
+        onSave={handleSaveSimulation}
+      />
     </Screen>
   );
 }
