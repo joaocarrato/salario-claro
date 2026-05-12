@@ -10,6 +10,7 @@ import {
   useWindowDimensions,
   View,
 } from "react-native";
+import { KeyboardAwareScrollView } from "react-native-keyboard-controller";
 import Animated, {
   Easing,
   useAnimatedStyle,
@@ -111,76 +112,92 @@ export function BottomSheet({
         </Animated.View>
 
         <Animated.View
-          className="bg-background rounded-t-2xl px-5 pt-3 pb-safe shadow-sm"
-          style={[{ minHeight: height * 0.4 }, sheetStyle]}
+          className="bg-background rounded-t-2xl shadow-sm overflow-hidden"
+          style={[
+            { maxHeight: height * 0.72, minHeight: height * 0.4 },
+            sheetStyle,
+          ]}
         >
-          <View className="items-center mb-4">
-            <View className="h-1.5 w-12 rounded-full bg-container" />
-          </View>
-
-          <View className="flex-row items-center mb-5">
-            <View>
-              <Text className="text-2xl font-roboto-bold color-secondary">
-                Salvar simulação
-              </Text>
-              <Text className="font-roboto color-subtitle mt-1">
-                Dê um nome para encontrar depois no histórico.
-              </Text>
+          <KeyboardAwareScrollView
+            className="px-5 pt-3"
+            contentContainerStyle={{ paddingBottom: 24 }}
+            bottomOffset={24}
+            keyboardShouldPersistTaps="handled"
+            showsVerticalScrollIndicator={false}
+          >
+            <View className="items-center mb-4">
+              <View className="h-1.5 w-12 rounded-full bg-container" />
             </View>
 
-            <Pressable className="ml-auto p-2" onPress={handleClose}>
-              <Ionicons name="close" size={22} color={"#3D4947"} />
-            </Pressable>
-          </View>
-
-          <InputForm
-            control={control}
-            name="title"
-            label="Título"
-            placeholder="Proposta Empresa X"
-            prefix={null}
-            rules={{
-              required: "Informe um título para salvar.",
-              validate: (value) =>
-                value.trim().length > 0 || "Informe um título para salvar.",
-            }}
-          />
-
-          <Text className="color-subtitle font-roboto-medium mt-5 mb-2">
-            Tag
-          </Text>
-          <Controller
-            control={control}
-            name="tag"
-            render={({ field }) => (
-              <View className="flex-row gap-2">
-                {TAG_OPTIONS.map((tag) => (
-                  <TagButton
-                    key={tag.value}
-                    label={tag.label}
-                    selected={field.value === tag.value}
-                    onPress={() => field.onChange(tag.value)}
-                  />
-                ))}
+            <View className="flex-row items-start mb-5">
+              <View className="flex-1 pr-3">
+                <Text className="text-2xl font-roboto-bold color-secondary">
+                  Salvar simulação
+                </Text>
+                <Text className="font-roboto color-subtitle mt-1">
+                  Dê um nome para encontrar depois no histórico.
+                </Text>
               </View>
-            )}
-          />
 
-          <View className="flex-row gap-3 mt-6">
-            <View className="flex-1">
-              <Button title="Cancelar" variant="outline" onPress={handleClose} />
+              <Pressable className="p-2" onPress={handleClose}>
+                <Ionicons name="close" size={22} color={"#3D4947"} />
+              </Pressable>
             </View>
-            <View className="flex-1">
-              <Button
-                title={loading ? "Salvando..." : "Salvar"}
-                iconName="save-outline"
-                loading={loading}
-                disabled={!formState.isValid || loading}
-                variant={!formState.isValid ? "disabled" : "primary"}
-                onPress={handleSubmit(handleSave)}
-              />
+
+            <InputForm
+              control={control}
+              name="title"
+              label="Título"
+              placeholder="Proposta Empresa X"
+              prefix={null}
+              returnKeyType="done"
+              rules={{
+                required: "Informe um título para salvar.",
+                validate: (value) =>
+                  value.trim().length > 0 || "Informe um título para salvar.",
+              }}
+            />
+
+            <Text className="color-subtitle font-roboto-medium mt-5 mb-2">
+              Tag
+            </Text>
+            <Controller
+              control={control}
+              name="tag"
+              render={({ field }) => (
+                <View className="flex-row gap-2">
+                  {TAG_OPTIONS.map((tag) => (
+                    <TagButton
+                      key={tag.value}
+                      label={tag.label}
+                      selected={field.value === tag.value}
+                      onPress={() => field.onChange(tag.value)}
+                    />
+                  ))}
+                </View>
+              )}
+            />
+
+            <View className="flex-row gap-3 mt-6">
+              <View className="flex-1">
+                <Button
+                  title="Cancelar"
+                  variant="outline"
+                  onPress={handleClose}
+                />
+              </View>
+              <View className="flex-1">
+                <Button
+                  title={loading ? "Salvando..." : "Salvar"}
+                  iconName="save-outline"
+                  loading={loading}
+                  disabled={!formState.isValid || loading}
+                  variant={!formState.isValid ? "disabled" : "primary"}
+                  onPress={handleSubmit(handleSave)}
+                />
+              </View>
             </View>
-          </View>
+          </KeyboardAwareScrollView>
         </Animated.View>
       </View>
     </Modal>
