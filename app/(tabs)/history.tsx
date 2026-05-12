@@ -37,6 +37,11 @@ export default function HistoryScreen() {
     () => mapSavedSimulationsToProposeCards(simulations),
     [simulations],
   );
+  const shouldShowEmptyHistory =
+    !latestHistorySimulation &&
+    !savedProposalCards.length &&
+    !isLoading &&
+    !latestCalculationQuery.isLoading;
 
   const handleRefresh = useCallback(() => {
     refetch();
@@ -92,7 +97,7 @@ export default function HistoryScreen() {
       {latestHistorySimulation ? (
         <HistoryCard simulation={latestHistorySimulation} />
       ) : (
-        !isLoading && <EmptyHistory />
+        shouldShowEmptyHistory && <EmptyHistory />
       )}
 
       {savedProposalCards.length ? (

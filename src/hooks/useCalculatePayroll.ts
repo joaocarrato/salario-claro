@@ -4,6 +4,10 @@ import {
   PayrollCalculationResult,
 } from "@/src/domain/Payroll/payrollTypes";
 import { payrollApi } from "@/src/domain/Payroll/payrollApi";
+import {
+  loadLatestPayrollCalculation,
+  saveLatestPayrollCalculation,
+} from "@/src/storage/latestPayrollCalculationStorage";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 
 export type LatestPayrollCalculation = {
@@ -24,13 +28,16 @@ export function useCalculatePayroll() {
   >({
     mutationFn: payrollApi.calculatePayroll,
     onSuccess(result) {
+      const latestCalculation = {
+        result,
+        calculatedAt: new Date().toISOString(),
+      };
+
       queryClient.setQueryData<LatestPayrollCalculation>(
         latestPayrollCalculationQueryKey,
-        {
-          result,
-          calculatedAt: new Date().toISOString(),
-        },
+        latestCalculation,
       );
+      void saveLatestPayrollCalculation(latestCalculation).catch(() => {});
     },
   });
 }
@@ -38,8 +45,7 @@ export function useCalculatePayroll() {
 export function useLatestPayrollCalculation() {
   return useQuery<LatestPayrollCalculation | null>({
     queryKey: latestPayrollCalculationQueryKey,
-    queryFn: () => null,
-    initialData: null,
+    queryFn: loadLatestPayrollCalculation,
     staleTime: Infinity,
   });
 }
