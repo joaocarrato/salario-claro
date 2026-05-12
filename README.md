@@ -6,9 +6,9 @@ The project is part of a portfolio focused on practical product flows: typed API
 
 ## Preview
 
-| Simulation form | Calculated result | Demo |
-| :-------------: | :---------------: | :--: |
-| <img src="./docs/media/simulation-screen.png" width="180" alt="Salary simulation screen with empty input fields" /> | <img src="./docs/media/simulation-filled-screen.png" width="180" alt="Salary simulation screen filled with calculated net salary and deductions" /> | <img src="./docs/media/demo.gif" width="180" alt="Demo of the Salário Claro salary simulation flow" /> |
+| Simulator | Comparison | History | Demo |
+| :-------: | :--------: | :-----: | :--: |
+| <img src="./docs/media/simulador.png" width="180" alt="Salary simulator screen with calculated net salary and deductions" /> | <img src="./docs/media/comparacao.png" width="180" alt="Salary proposal comparison screen" /> | <img src="./docs/media/historico.png" width="180" alt="Saved salary simulations history screen" /> | <img src="./docs/media/video-app.gif" width="180" alt="Demo of the Salário Claro app flows" /> |
 
 ## Problem It Solves
 
@@ -138,8 +138,6 @@ Current tests cover currency formatting, payroll payload builders, API error for
 ## Status
 
 The simulation module is implemented and integrated with the backend. The app also includes comparison and history flows, with saved simulations handled by the Simulation API.
-
-- Add updated screenshots for History and Comparison screens.
 
 ## License
 
