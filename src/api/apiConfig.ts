@@ -12,7 +12,7 @@ function getApiBaseUrl() {
   }
 
   if (Platform.OS === "android") {
-    return "http://10.0.2.2:8080/api";
+    return "https://salario-claro-backend.onrender.com/api";
   }
 
   return "https://salario-claro-backend.onrender.com/api";
