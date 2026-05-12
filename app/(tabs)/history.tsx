@@ -5,14 +5,16 @@ import React from "react";
 import { Text, View } from "react-native";
 
 export default function HistoryScreen() {
+  const hasHistory = true;
+
   return (
-    <Screen>
+    <Screen scrollable>
       <Text className="text-4xl font-roboto-bold">Histórico</Text>
       <Text className="text-lg font-roboto color-subtitle mt-2 mb-8">
         Suas ultimas simulações
       </Text>
 
-      <HistoryCard />
+      {hasHistory ? <HistoryCard /> : <EmptyHistory />}
     </Screen>
   );
 }
