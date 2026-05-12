@@ -1,12 +1,18 @@
+import { PayrollSimulation } from "@/src/domain/Simulation/simulationTypes";
+import { formatCurrency } from "@/src/utils/currency";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Octicons from "@expo/vector-icons/Octicons";
 import { Link } from "expo-router";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 
-export function HistoryCard() {
-  //TODO: Substituir os dados hardcoded por props.
+type HistoryCardProps = {
+  simulation: PayrollSimulation;
+};
 
+export const HistoryCard = React.memo(function HistoryCard({
+  simulation,
+}: HistoryCardProps) {
   return (
     <View className="relative overflow-hidden bg-white rounded-lg p-6 shadow-sm">
       <View pointerEvents="none" className="absolute right-0 top-0 opacity-10">
@@ -21,7 +27,7 @@ export function HistoryCard() {
           </Text>
         </View>
         <Text className="text-sm font-roboto color-subtitle ml-auto">
-          Hoje, 14:30
+          {formatHistoryDate(simulation.created_at)}
         </Text>
       </View>
 
@@ -29,13 +35,15 @@ export function HistoryCard() {
         Salário líquido estimado
       </Text>
 
-      <Text className="text-4xl font-roboto-bold mt-1">R$ 5.000,00</Text>
+      <Text className="text-4xl font-roboto-bold mt-1">
+        {formatCurrency(parseSimulationNumber(simulation.net_salary))}
+      </Text>
 
       <Divider />
 
       <Text className="text-lg font-roboto color-subtitle">Salário bruto</Text>
       <Text className="text-2xl font-roboto-bold mt-1 color-secondary">
-        R$ 5.000,00
+        {formatCurrency(parseSimulationNumber(simulation.gross_salary))}
       </Text>
 
       <Link href="/simulation-details" asChild>
@@ -49,8 +57,33 @@ export function HistoryCard() {
       </Link>
     </View>
   );
-}
+});
 
 function Divider() {
   return <View className="h-0.5 bg-gray-200 my-6" />;
+}
+
+function parseSimulationNumber(value: string) {
+  const parsedValue = Number(value);
+
+  return Number.isFinite(parsedValue) ? parsedValue : 0;
+}
+
+function formatHistoryDate(value: string | null) {
+  if (!value) {
+    return "Recente";
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Recente";
+  }
+
+  return date.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+  });
 }
