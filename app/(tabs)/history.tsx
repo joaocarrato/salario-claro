@@ -1,5 +1,7 @@
 import { HistoryCard } from "@/src/components/HistoryCard/HistoryCard";
+import { ProposeCard } from "@/src/components/ProposeCard/ProposeCard";
 import Screen from "@/src/components/Screen/Screen";
+import { currentSalaryProposalMock } from "@/src/utils/proposeCardMock";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
 import { Text, View } from "react-native";
@@ -15,6 +17,7 @@ export default function HistoryScreen() {
       </Text>
 
       {hasHistory ? <HistoryCard /> : <EmptyHistory />}
+      <ProposeCard {...currentSalaryProposalMock} />
     </Screen>
   );
 }
