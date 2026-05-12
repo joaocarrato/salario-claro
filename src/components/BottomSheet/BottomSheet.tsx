@@ -1,7 +1,7 @@
 import { Button } from "@/src/components/Button/Button";
 import { InputForm } from "@/src/components/InputForm/InputForm";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import {
   Modal,
@@ -54,6 +54,7 @@ export function BottomSheet({
   const { height } = useWindowDimensions();
   const translateY = useSharedValue(height);
   const backdropOpacity = useSharedValue(0);
+  const previousVisibleRef = useRef(visible);
 
   const { control, handleSubmit, reset, formState } =
     useForm<BottomSheetFormData>({
@@ -63,7 +64,6 @@ export function BottomSheet({
 
   useEffect(() => {
     if (visible) {
-      reset(INITIAL_FORM_VALUES);
       setIsMounted(true);
       translateY.value = height;
       backdropOpacity.value = 0;
@@ -78,7 +78,15 @@ export function BottomSheet({
       }
     });
     backdropOpacity.value = withTiming(0, animationConfig);
-  }, [backdropOpacity, height, reset, translateY, visible]);
+  }, [backdropOpacity, height, translateY, visible]);
+
+  useEffect(() => {
+    if (!previousVisibleRef.current && visible) {
+      reset(INITIAL_FORM_VALUES);
+    }
+
+    previousVisibleRef.current = visible;
+  }, [reset, visible]);
 
   function handleClose() {
     reset(INITIAL_FORM_VALUES);
@@ -86,7 +94,7 @@ export function BottomSheet({
   }
 
   function handleSave(data: BottomSheetFormData) {
-    onSave(data);
+    onSave({ ...data, title: data.title.trim() });
   }
 
   const backdropStyle = useAnimatedStyle(() => ({

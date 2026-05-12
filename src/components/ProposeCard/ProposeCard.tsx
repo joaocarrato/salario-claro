@@ -36,6 +36,10 @@ export function ProposeCard({
   totalDiscounts,
   discountsDescription,
 }: ProposeCardProps) {
+  const discountsSuffix = discountsDescription.trim()
+    ? ` (${discountsDescription})`
+    : "";
+
   return (
     <View className="bg-white rounded-lg p-6 shadow-sm mt-4 gap-4">
       <View className="flex-row items-start gap-3">
@@ -60,8 +64,8 @@ export function ProposeCard({
       <View className="flex-row items-start">
         <Ionicons name="trending-down-outline" color={"#BA1A1A"} size={20} />
         <Text className="text-base ml-2 font-roboto flex-1">
-          {formatDeductionCurrency(totalDiscounts)} em descontos (
-          {discountsDescription})
+          {formatDeductionCurrency(totalDiscounts)} em descontos
+          {discountsSuffix}
         </Text>
       </View>
     </View>

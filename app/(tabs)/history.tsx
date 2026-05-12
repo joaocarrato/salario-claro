@@ -261,7 +261,7 @@ function EmptyHistory() {
   return (
     <View className="self-center items-center">
       <View className="h-16 w-16 bg-surface rounded-full items-center justify-center">
-        <Ionicons name="receipt-outline" color={"555C6A"} size={24} />
+        <Ionicons name="receipt-outline" color={"#555C6A"} size={24} />
       </View>
 
       <Text className="text-2xl font-roboto-bold mt-4">Fim do histórico</Text>

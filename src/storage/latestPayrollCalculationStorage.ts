@@ -33,6 +33,7 @@ export async function loadLatestPayrollCalculation() {
 
     return parsedCalculation;
   } catch {
+    await clearLatestPayrollCalculation();
     return null;
   }
 }
@@ -49,6 +50,7 @@ function isLatestPayrollCalculation(
   }
 
   const result = value.result;
+  const discounts = isRecord(result) ? result.discounts : null;
 
   return (
     isRecord(result) &&
@@ -58,7 +60,13 @@ function isLatestPayrollCalculation(
     isFiniteNumber(result.irrf_base) &&
     isFiniteNumber(result.effective_rate) &&
     isFiniteNumber(result.calculation_year) &&
-    isRecord(result.discounts)
+    isRecord(discounts) &&
+    isFiniteNumber(discounts.inss) &&
+    isFiniteNumber(discounts.irrf) &&
+    isFiniteNumber(discounts.transport) &&
+    isFiniteNumber(discounts.meal) &&
+    isFiniteNumber(discounts.health_plan) &&
+    isFiniteNumber(discounts.other)
   );
 }
 

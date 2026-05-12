@@ -28,7 +28,7 @@ export const HistoryCard = React.memo(function HistoryCard({
         <View className="flex-row items-center gap-2">
           <Ionicons name="time" color={"#00685F"} size={28} />
           <Text className="text-lg font-roboto-bold text-primary">
-            ULTIMA SIMULAÇÃO
+            ÚLTIMA SIMULAÇÃO
           </Text>
         </View>
         <Text className="text-sm font-roboto color-subtitle ml-auto">
