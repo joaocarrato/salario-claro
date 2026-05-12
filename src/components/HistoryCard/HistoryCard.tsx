@@ -1,9 +1,8 @@
 import { formatCurrency } from "@/src/utils/currency";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import Octicons from "@expo/vector-icons/Octicons";
-import { Link } from "expo-router";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 export type HistoryCardData = {
   grossSalary: number;
@@ -50,16 +49,6 @@ export const HistoryCard = React.memo(function HistoryCard({
       <Text className="text-2xl font-roboto-bold mt-1 color-secondary">
         {formatCurrency(simulation.grossSalary)}
       </Text>
-
-      <Link href="/simulation-details" asChild>
-        <Pressable
-          className="self-end flex-row items-center gap-1"
-          hitSlop={10}
-        >
-          <Text className="text-primary font-roboto-bold ">Ver detalhes</Text>
-          <Ionicons name="arrow-forward" size={18} color={"#00685F"} />
-        </Pressable>
-      </Link>
     </View>
   );
 });

@@ -1,10 +1,10 @@
-# Salario Claro
+# Salário Claro
 
-Salario Claro is a React Native / Expo mobile app for Brazilian workers who want to estimate net salary and compare job offers. It consumes a payroll backend API to calculate deductions and show a clearer view of what each salary means after discounts.
+Salário Claro is an Expo React Native app for estimating Brazilian CLT net salary and comparing salary proposals. The app connects to a payroll backend API, applies the current calculation flow, and presents gross salary, discounts, and net salary in a clearer mobile interface.
 
-The project is intentionally lightweight: screens handle user interaction, reusable components handle UI blocks, and API logic stays in small service and hook layers.
+The project is part of a portfolio focused on practical product flows: typed API integration, mobile form handling, reusable UI components, and a simple architecture that stays easy to maintain.
 
-## App Preview
+## Preview
 
 <p align="center">
   <img src="./docs/media/simulation-screen.png" width="280" alt="Salary simulation screen with empty input fields" />
@@ -17,115 +17,88 @@ The project is intentionally lightweight: screens handle user interaction, reusa
   <strong>Calculated result</strong>
 </p>
 
-### Demo Video
-
 <p align="center">
-  <img src="./docs/media/demo.gif" width="480" alt="Demo of the Salario Claro salary simulation app flow" />
+  <img src="./docs/media/demo.gif" width="480" alt="Demo of the Salário Claro salary simulation flow" />
 </p>
 
-## Project status
+## Problem It Solves
 
-Implemented:
+Gross salary does not show how much a worker actually receives after INSS, IRRF, transport, meal, health plan, and other discounts. Salário Claro helps users quickly estimate their net salary and compare proposals with a more realistic view of take-home pay.
 
-- Salary simulation through the payroll API
-- Job offer comparison between two gross salaries
-- Deduction breakdown for INSS, IRRF, and benefit-related discounts
-- Loading and readable error states for API requests
-- Pull-to-reset behavior on the main flows
-- Keyboard-aware mobile forms
-- Shared currency formatting for Brazilian Real
-- Unit tests for pure helpers and API error formatting
+## Current Features
 
-Planned:
+- CLT salary simulation from gross salary, dependents, discounts, and the default 2026 calculation year.
+- Payroll result with net salary, gross salary, total discounts, INSS, IRRF, benefits, IRRF base, effective rate, and calculation year.
+- Save simulation flow with a bottom sheet title form.
+- History screen with the latest calculated simulation persisted locally.
+- Saved simulations loaded from the backend history endpoint.
+- Pull-to-refresh on history and pull-to-reset on main flows.
+- Swipe-to-delete for saved simulations, with confirmation before deleting.
+- Salary proposal comparison between two gross salaries.
+- Loading, disabled, success, and friendly error states for API requests.
+- Keyboard-aware mobile forms and responsive card layouts.
 
-- History screen
-- Saving previous simulations
-- More detailed explanations for payroll rules
-- Store publishing preparation
+## Simulation Module
 
-## Features
+The simulation module is the main completed milestone of the app.
 
-- Net salary simulation from gross salary and deductions
-- Job offer comparison using two salary proposals
-- Dynamic comparison message showing which proposal pays more in net salary
-- Deduction display for INSS, IRRF, transport, meal, health plan, and other discounts
-- Typed API integration with Axios and TanStack Query mutations
-- Form reset after successful API calls
-- Failed requests keep the current form inputs
-- Loading states that prevent duplicate submits
-- Pull-to-reset on simulation and comparison screens
+It currently supports two related flows:
 
-## Tech stack
+- **Calculate salary:** sends the form to `POST /payroll/calculate`, renders the result immediately, and stores the latest calculation locally with AsyncStorage so it remains available in History after reopening the app.
+- **Save simulation:** after a calculation, the user can open a bottom sheet, add a title, and persist the simulation through `POST /simulations`.
 
-- React Native
-- Expo and Expo Router
+Saved simulations are listed with `GET /simulations` and can be removed with `DELETE /simulations/{id}`.
+
+## Tech Stack
+
+- React Native with Expo and Expo Router
 - TypeScript
 - Axios
 - TanStack Query
-- React Hook Form
-- Zod
+- React Hook Form and Zod
 - NativeWind / Tailwind-style class names
 - React Native Keyboard Controller
-- React Navigation bottom tabs
-- Jest and ts-jest
-- ESLint with Expo config
+- React Native Gesture Handler and Reanimated
+- AsyncStorage
+- Jest, ts-jest, and Expo ESLint
 
-## Architecture overview
+## Project Structure
 
-The app uses a simple structure that keeps responsibilities separated without adding unnecessary layers.
+- `app/`: Expo Router screens and navigation groups
+- `src/components/`: reusable UI components
+- `src/domain/Payroll/`: payroll API calls, payload builders, and types
+- `src/domain/Simulation/`: saved simulation API calls and types
+- `src/hooks/`: TanStack Query hooks
+- `src/api/`: Axios configuration and API error helpers
+- `src/schema/`: form validation schemas
+- `src/storage/`: local persistence for the latest calculation
+- `src/utils/`: formatting helpers
 
-- `app/`: Expo Router screens and root layout
-- `src/components/`: reusable UI components such as cards, buttons, inputs, and result cards
-- `src/domain/Payroll/`: payroll API service functions, payload builders, and TypeScript contracts
-- `src/hooks/`: TanStack Query mutation hooks
-- `src/api/`: shared Axios configuration and API error formatting
-- `src/schema/`: form validation and input parsing schemas
-- `src/utils/`: pure helpers such as currency formatting
-- `src/navigation/`: bottom tab configuration
+## API
 
-Screens own UI state and user interactions. Services call the backend. Hooks connect services to TanStack Query. Types describe the API contracts. Utils contain small pure functions that are easy to test.
+The app uses a shared Axios client in `src/api/apiConfig.ts`.
 
-## API integration
-
-The app expects a backend API running on port `8080` with base path `/api`.
-
-Main endpoints used by the app:
+Current endpoints used by the frontend:
 
 - `POST /payroll/calculate`
 - `POST /payroll/compare`
+- `POST /simulations`
+- `GET /simulations`
+- `DELETE /simulations/{id}`
 
-The shared Axios instance lives in `src/api/apiConfig.ts`. Payroll-specific requests live in `src/domain/Payroll/payrollApi.ts`.
-
-Default API URLs:
-
-- Android Emulator: `http://10.0.2.2:8080/api`
-- iOS Simulator and web: `http://localhost:8080/api`
-
-For a physical device, use your computer LAN IP:
+By default, the app points to:
 
 ```bash
-EXPO_PUBLIC_API_URL=http://YOUR_LAN_IP:8080/api npm start
+https://salario-claro-backend.onrender.com/api
 ```
 
-If Axios shows `Network Error`, check that:
-
-- the backend is running on port `8080`
-- the URL includes `/api`
-- Android Emulator uses `10.0.2.2`, not `localhost`
-- the physical device and backend machine are on the same network
-- firewall or VPN settings are not blocking port `8080`
-
-## Environment and configuration
-
-The app supports this Expo public environment variable:
+You can override it with:
 
 ```bash
 EXPO_PUBLIC_API_URL=http://YOUR_API_HOST:8080/api
 ```
 
-If the variable is not set, the app falls back to platform defaults defined in `src/api/apiConfig.ts`.
-
-## Getting started
+## Run Locally
 
 Install dependencies:
 
@@ -157,9 +130,9 @@ Run on web:
 npm run web
 ```
 
-## Running tests
+## Checks
 
-Run the unit tests:
+Run tests:
 
 ```bash
 npm test
@@ -171,18 +144,14 @@ Run lint:
 npm run lint
 ```
 
-Current tests cover currency formatting, payroll payload builders, proposal comparison messaging, and API error formatting.
+Current tests cover currency formatting, payroll payload builders, API error formatting, proposal comparison messaging, and local storage for the latest calculation.
 
-## Technical highlights
+## Status
 
-- Typed integration with payroll API endpoints
-- Shared Axios client with platform-aware base URL handling
-- TanStack Query mutations for calculate and compare flows
-- Mobile-friendly forms with keyboard handling and validation
-- Reusable screen, card, button, input, and result components
-- Pure helper extraction for formatting, payload building, and comparison logic
-- Focused unit tests for business logic that should not regress
+The simulation module is implemented and integrated with the backend. The app also includes comparison and history flows, with saved simulations handled by the Simulation API.
+
+- Add updated screenshots for History and Comparison screens.
 
 ## License
 
-License not defined yet.
+No license has been defined yet.
