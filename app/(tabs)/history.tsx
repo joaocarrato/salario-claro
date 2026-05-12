@@ -2,7 +2,10 @@ import {
   HistoryCard,
   HistoryCardData,
 } from "@/src/components/HistoryCard/HistoryCard";
-import { ProposeCard } from "@/src/components/ProposeCard/ProposeCard";
+import {
+  ProposeCard,
+  ProposeCardProps,
+} from "@/src/components/ProposeCard/ProposeCard";
 import Screen from "@/src/components/Screen/Screen";
 import { PayrollSimulation } from "@/src/domain/Simulation/simulationTypes";
 import {
@@ -10,7 +13,6 @@ import {
   useLatestPayrollCalculation,
 } from "@/src/hooks/useCalculatePayroll";
 import { useSimulations } from "@/src/hooks/useSimulations";
-import { currentSalaryProposalMock } from "@/src/utils/proposeCardMock";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useCallback, useMemo } from "react";
 import { RefreshControl, Text, View } from "react-native";
@@ -27,6 +29,10 @@ export default function HistoryScreen() {
   const latestHistorySimulation = useMemo(
     () => getLatestHistorySimulation(simulations, latestCalculationQuery.data),
     [latestCalculationQuery.data, simulations],
+  );
+  const savedProposalCards = useMemo(
+    () => mapSavedSimulationsToProposeCards(simulations),
+    [simulations],
   );
 
   const handleRefresh = useCallback(() => {
@@ -63,13 +69,28 @@ export default function HistoryScreen() {
         !isLoading && <EmptyHistory />
       )}
 
-      <ProposeCard {...currentSalaryProposalMock} />
+      {savedProposalCards.length ? (
+        <View className="mt-6">
+          <Text className="text-2xl font-roboto-bold color-secondary">
+            Simulações salvas
+          </Text>
+
+          {savedProposalCards.map(({ id, props }) => (
+            <ProposeCard key={id} {...props} />
+          ))}
+        </View>
+      ) : null}
     </Screen>
   );
 }
 
 type HistorySimulationCandidate = HistoryCardData & {
   time: number;
+};
+
+type SavedProposalCard = {
+  id: string;
+  props: ProposeCardProps;
 };
 
 function getLatestHistorySimulation(
@@ -113,6 +134,31 @@ function getLatestSavedSimulation(
   };
 }
 
+function mapSavedSimulationsToProposeCards(
+  simulations?: PayrollSimulation[],
+): SavedProposalCard[] {
+  if (!simulations?.length) {
+    return [];
+  }
+
+  return [...simulations]
+    .sort((first, second) => getSimulationTime(second) - getSimulationTime(first))
+    .map((simulation) => ({
+      id: simulation.id,
+      props: {
+        title: simulation.title || "Simulação salva",
+        tag: "saved",
+        dateLabel: formatSimulationDate(
+          simulation.created_at ?? simulation.updated_at,
+        ),
+        grossSalary: parseSimulationNumber(simulation.gross_salary),
+        netSalary: parseSimulationNumber(simulation.net_salary),
+        totalDiscounts: parseSimulationNumber(simulation.total_discounts),
+        discountsDescription: getDiscountsDescription(simulation),
+      },
+    }));
+}
+
 function mapCalculationToHistoryCandidate({
   result,
   calculatedAt,
@@ -143,6 +189,41 @@ function parseSimulationNumber(value: string) {
   const parsedValue = Number(value);
 
   return Number.isFinite(parsedValue) ? parsedValue : 0;
+}
+
+function formatSimulationDate(value: string | null) {
+  if (!value) {
+    return "Recente";
+  }
+
+  const date = new Date(value);
+
+  if (Number.isNaN(date.getTime())) {
+    return "Recente";
+  }
+
+  return date.toLocaleDateString("pt-BR", {
+    day: "2-digit",
+    month: "long",
+    year: "numeric",
+  });
+}
+
+function getDiscountsDescription(simulation: PayrollSimulation) {
+  const discounts = [
+    { label: "INSS", value: simulation.discounts.inss },
+    { label: "IRRF", value: simulation.discounts.irrf },
+    { label: "Vale transporte", value: simulation.discounts.transport },
+    { label: "Vale refeição", value: simulation.discounts.meal },
+    { label: "Plano de saúde", value: simulation.discounts.health_plan },
+    { label: "Outros", value: simulation.discounts.other },
+  ];
+
+  const activeDiscounts = discounts
+    .filter((discount) => discount.value > 0)
+    .map((discount) => discount.label);
+
+  return activeDiscounts.length ? activeDiscounts.join(", ") : "sem descontos";
 }
 
 function EmptyHistory() {
