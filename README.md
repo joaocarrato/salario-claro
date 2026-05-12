@@ -6,20 +6,9 @@ The project is part of a portfolio focused on practical product flows: typed API
 
 ## Preview
 
-<p align="center">
-  <img src="./docs/media/simulation-screen.png" width="280" alt="Salary simulation screen with empty input fields" />
-  <img src="./docs/media/simulation-filled-screen.png" width="280" alt="Salary simulation screen filled with calculated net salary and deductions" />
-</p>
-
-<p align="center">
-  <strong>Simulation form</strong>
-  &nbsp;&nbsp;&nbsp;&nbsp;
-  <strong>Calculated result</strong>
-</p>
-
-<p align="center">
-  <img src="./docs/media/demo.gif" width="480" alt="Demo of the Salário Claro salary simulation flow" />
-</p>
+| Simulation form | Calculated result | Demo |
+| :-------------: | :---------------: | :--: |
+| <img src="./docs/media/simulation-screen.png" width="180" alt="Salary simulation screen with empty input fields" /> | <img src="./docs/media/simulation-filled-screen.png" width="180" alt="Salary simulation screen filled with calculated net salary and deductions" /> | <img src="./docs/media/demo.gif" width="180" alt="Demo of the Salário Claro salary simulation flow" /> |
 
 ## Problem It Solves
 
