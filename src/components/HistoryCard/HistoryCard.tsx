@@ -1,4 +1,5 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
+import Octicons from "@expo/vector-icons/Octicons";
 import { Link } from "expo-router";
 import React from "react";
 import { Pressable, Text, View } from "react-native";
@@ -7,7 +8,11 @@ export function HistoryCard() {
   //TODO: Substituir os dados hardcoded por props.
 
   return (
-    <View className="bg-white rounded-lg p-6 shadow-sm">
+    <View className="relative overflow-hidden bg-white rounded-lg p-6 shadow-sm">
+      <View pointerEvents="none" className="absolute right-0 top-0 opacity-10">
+        <Octicons name="history" color={"#555C6A"} size={80} />
+      </View>
+
       <View className="flex-row items-center">
         <View className="flex-row items-center gap-2">
           <Ionicons name="time" color={"#00685F"} size={28} />
@@ -34,7 +39,10 @@ export function HistoryCard() {
       </Text>
 
       <Link href="/simulation-details" asChild>
-        <Pressable className="self-end flex-row items-center gap-1">
+        <Pressable
+          className="self-end flex-row items-center gap-1"
+          hitSlop={10}
+        >
           <Text className="text-primary font-roboto-bold ">Ver detalhes</Text>
           <Ionicons name="arrow-forward" size={18} color={"#00685F"} />
         </Pressable>
