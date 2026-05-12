@@ -1,8 +1,10 @@
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React from "react";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 
 export function HistoryCard() {
+  //TODO: Substituir os dados hardcoded por props e adicionar navegação para detalhes da simulação
+
   return (
     <View className="bg-white rounded-lg p-6 shadow-sm">
       <View className="flex-row items-center">
@@ -30,10 +32,10 @@ export function HistoryCard() {
         R$ 5.000,00
       </Text>
 
-      <Pressable className="self-end flex-row items-center gap-1">
+      {/* <Pressable className="self-end flex-row items-center gap-1">
         <Text className="text-primary font-roboto-bold ">Ver detalhes</Text>
         <Ionicons name="arrow-forward" size={18} color={"#00685F"} />
-      </Pressable>
+      </Pressable> */}
     </View>
   );
 }
