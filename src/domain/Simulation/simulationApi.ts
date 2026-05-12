@@ -24,7 +24,12 @@ async function listSimulations(): Promise<PayrollSimulation[]> {
   return response.data.data;
 }
 
+async function deleteSimulation(id: string): Promise<void> {
+  await api.delete(`/simulations/${id}`);
+}
+
 export const simulationApi = {
   createSimulation,
+  deleteSimulation,
   listSimulations,
 };

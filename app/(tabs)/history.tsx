@@ -12,10 +12,15 @@ import {
   LatestPayrollCalculation,
   useLatestPayrollCalculation,
 } from "@/src/hooks/useCalculatePayroll";
+import {
+  getDeleteSimulationErrorMessage,
+  useDeleteSimulation,
+} from "@/src/hooks/useDeleteSimulation";
 import { useSimulations } from "@/src/hooks/useSimulations";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useCallback, useMemo } from "react";
-import { RefreshControl, Text, View } from "react-native";
+import { Alert, Pressable, RefreshControl, Text, View } from "react-native";
+import ReanimatedSwipeable from "react-native-gesture-handler/ReanimatedSwipeable";
 
 export default function HistoryScreen() {
   const {
@@ -25,6 +30,7 @@ export default function HistoryScreen() {
     isRefetching,
     refetch,
   } = useSimulations();
+  const deleteSimulationMutation = useDeleteSimulation();
   const latestCalculationQuery = useLatestPayrollCalculation();
   const latestHistorySimulation = useMemo(
     () => getLatestHistorySimulation(simulations, latestCalculationQuery.data),
@@ -38,6 +44,29 @@ export default function HistoryScreen() {
   const handleRefresh = useCallback(() => {
     refetch();
   }, [refetch]);
+
+  const handleDeleteSimulation = useCallback(
+    (id: string) => {
+      Alert.alert("Excluir simulação?", "Essa ação não pode ser desfeita.", [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Excluir",
+          style: "destructive",
+          onPress: async () => {
+            try {
+              await deleteSimulationMutation.mutateAsync(id);
+            } catch (error) {
+              Alert.alert(
+                "Não foi possível excluir",
+                getDeleteSimulationErrorMessage(error),
+              );
+            }
+          },
+        },
+      ]);
+    },
+    [deleteSimulationMutation],
+  );
 
   return (
     <Screen
@@ -76,11 +105,52 @@ export default function HistoryScreen() {
           </Text>
 
           {savedProposalCards.map(({ id, props }) => (
-            <ProposeCard key={id} {...props} />
+            <SwipeableSimulationCard
+              key={id}
+              disabled={deleteSimulationMutation.isPending}
+              onDelete={() => handleDeleteSimulation(id)}
+            >
+              <ProposeCard {...props} />
+            </SwipeableSimulationCard>
           ))}
         </View>
       ) : null}
     </Screen>
+  );
+}
+
+function SwipeableSimulationCard({
+  children,
+  disabled,
+  onDelete,
+}: {
+  children: React.ReactNode;
+  disabled: boolean;
+  onDelete: () => void;
+}) {
+  return (
+    <ReanimatedSwipeable
+      enabled={!disabled}
+      friction={2}
+      overshootRight={false}
+      rightThreshold={40}
+      renderRightActions={() => (
+        <View className="w-28 mt-4 ml-3 rounded-lg overflow-hidden">
+          <Pressable
+            className={`flex-1 bg-deduction items-center justify-center px-3 ${
+              disabled ? "opacity-60" : ""
+            }`}
+            disabled={disabled}
+            onPress={onDelete}
+          >
+            <Ionicons name="trash-outline" size={20} color={"#FFFFFF"} />
+            <Text className="text-white font-roboto-bold mt-1">Excluir</Text>
+          </Pressable>
+        </View>
+      )}
+    >
+      {children}
+    </ReanimatedSwipeable>
   );
 }
 
